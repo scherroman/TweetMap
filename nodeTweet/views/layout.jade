@@ -27,10 +27,16 @@ html
         div.collapse.navbar-collapse#navBar
           ul.nav.navbar-nav
             li.active
-              span.glyphicon.glyphicon-th
-              a(href='/Map') Map Tweets
+              a.navItemLink(href='/Map')
+                button.textCenter.navButton
+                  span.navItemIcon.glyphicon.glyphicon-th
+                  br
+                  span Map Tweets
             li.active
-              span.glyphicon.glyphicon-search
-              a(href='/Search') Search Tweets
+              a.navItemLink(href='/Search')
+                button.textCenter.navButton
+                  span.navItemIcon.glyphicon.glyphicon-search
+                  br
+                  span Search Tweets
 
     block content
