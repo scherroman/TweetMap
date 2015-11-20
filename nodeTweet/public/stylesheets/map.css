@@ -85,6 +85,8 @@
 	color: white;
 	height: 50px;
 	outline: 0;
+	word-wrap: break-word;
+	white-space: normal;
 }
 
 .mapWordButton:hover,  .homeScreenButton:active, .mapWordButton:focus {

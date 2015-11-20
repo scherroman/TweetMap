@@ -22,11 +22,12 @@ block content
 								p.tweetPlace= tweetPlace
 							div.tweetTimeDiv.col-sm-6
 								p.tweetTime= tweetTime
+			hr
 			div#prompt
 				h3 Which words best describe the theme of this tweet?
 			div.wordsDiv.row
 				if (tokens.length > 0)
 					each token in tokens
-						div.mapWordButtonDiv.col-sm-2.col-xs-12
+						div.mapWordButtonDiv.col-sm-3.col-xs-12
 							button.mapWordButton.textCenter.btn.col-xs-12
 								span.homeScreenButtonText #{token}
