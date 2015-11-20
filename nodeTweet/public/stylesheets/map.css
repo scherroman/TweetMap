@@ -70,13 +70,29 @@
 	padding: 10px;
 }
 
+@media (max-width: 767px) {
+	.wordsDiv {
+		padding-right: 50px;
+		padding-left: 50px;
+	}
+	.mapWordButtonDiv {
+		padding: 5px;
+	}
+}
+
 .mapWordButton {
 	background-color: black;
 	color: white;
-	white-space: normal;
+	height: 50px;
+	outline: 0;
 }
 
-.mapWordButton:hover, .mapWordButton:focus {
+.mapWordButton:hover,  .homeScreenButton:active, .mapWordButton:focus {
 	background-color: orange;
 	color: white;
+	outline: 0 !important;
+	background-image: none;
+    outline: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }

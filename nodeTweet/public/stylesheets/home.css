@@ -13,14 +13,15 @@
 .homeScreenButton {
 	background-color: black;
 	color: orange;
-	border: .5px;
-	outline: 0;
+	border: none;
+	outline: none;
 	height: 120px;
 	line-height: 30px;
 }
 
-.homeScreenButton:hover {
+.homeScreenButton:hover, .homeScreenButton:active, .homeScreenButton:focus {
 	color: white;
+	outline: none !important;
 }
 
 .homeScreenButtonIcon {

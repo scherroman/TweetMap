@@ -6,7 +6,7 @@ block extraHeader
 block content
 	div.container
 		div#titleContent
-			a#mainTitle(href="/")
+			a#mainTitle
 				h1= title
 		div#mainContent
 			div.tweetContainer
@@ -27,6 +27,6 @@ block content
 			div.wordsDiv.row
 				if (tokens.length > 0)
 					each token in tokens
-						div.mapWordButtonDiv.col-sm-2
+						div.mapWordButtonDiv.col-sm-2.col-xs-12
 							button.mapWordButton.textCenter.btn.col-xs-12
 								span.homeScreenButtonText #{token}
