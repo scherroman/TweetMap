@@ -17,7 +17,9 @@ var connection = null;
 /* GET home page. */
 router.get('/', function(req, res, next) {
   //Get article title & body from DB entry for title passed in
-  res.render('map', { title: 'Map' });
+  res.render('map', { title: 'Map a Tweet', tweetUser: 'Aaron', tweetText: 'Praise the Lord', 
+  	tweetPlace: 'NYC, New York', tweetTime: '2:00 PM Oct 15 2015', 
+  	tokens:['Praiseasldaldasldladslasldalsdalsdladlasl', 'the', 'Lord', 'yeah', 'a', 'b', 'c', 'd', 'efsfwsf', 'f', 'g', 'h'] });
   
 });
 

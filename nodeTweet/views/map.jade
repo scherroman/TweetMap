@@ -1,6 +1,32 @@
 extends layout
 
+block extraHeader
+	link(rel='stylesheet', href='/stylesheets/map.css')
+
 block content
-	div#titleContent
-		a#mainTitle(href="/")
-			h1= title
+	div.container
+		div#titleContent
+			a#mainTitle(href="/")
+				h1= title
+		div#mainContent
+			div.tweetContainer
+				div.tweet.panel.panel-default
+					div.tweetContent.panel-body
+						div.tweetUserDiv
+							p.tweetUser= '@' + tweetUser
+						div.tweetTextDiv
+							p.tweetText= tweetText
+						hr
+						div.tweetFooter.row
+							div.tweetPlaceDiv.col-sm-6
+								p.tweetPlace= tweetPlace
+							div.tweetTimeDiv.col-sm-6
+								p.tweetTime= tweetTime
+			div#prompt
+				h3 Which words best describe the theme of this tweet?
+			div.wordsDiv.row
+				if (tokens.length > 0)
+					each token in tokens
+						div.mapWordButtonDiv.col-sm-2
+							button.mapWordButton.textCenter.btn.col-xs-12
+								span.homeScreenButtonText #{token}

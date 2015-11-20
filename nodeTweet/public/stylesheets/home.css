@@ -1,0 +1,32 @@
+@import url("main.css");
+
+.homeScreenButtonDiv {
+	padding: 10px;
+}
+
+@media (max-width: 767px) {
+	.homeScreenButtonDiv {
+		padding: 5px;
+	}
+}
+
+.homeScreenButton {
+	background-color: black;
+	color: orange;
+	border: .5px;
+	outline: 0;
+	height: 120px;
+	line-height: 30px;
+}
+
+.homeScreenButton:hover {
+	color: white;
+}
+
+.homeScreenButtonIcon {
+	font-size: 35px;
+}
+
+.homeScreenButtonText {
+	font-size: 20px;
+}

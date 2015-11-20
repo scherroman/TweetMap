@@ -1,10 +1,13 @@
 extends layout
 
+block extraHeader
+	link(rel='stylesheet', href='/stylesheets/home.css')
+
 block content
-	div#titleContent
-		a#mainTitle(href="/")
-			h1= title
 	div.container
+		div#titleContent
+			a#mainTitle(href="/")
+				h1= title
 		div#mainContent.row
 			div.homeScreenButtonDiv.col-sm-6.col-xs-12
 				a.navItemLink(href='/Map')

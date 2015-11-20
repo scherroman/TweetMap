@@ -14,15 +14,15 @@ a {
     min-height: 80px;
 }
 
+.navbar-nav > li > a {
+	padding: 0px;
+}
+
 .navbar-inverse .navbar-brand {
     padding-top: 0px;
     padding-bottom: 0px;
     line-height: 80px;
     color: white;
-}
-
-.navbar-nav > li > a {
-	padding: 0px;
 }
 
 @media (max-width: 767px) {
@@ -68,36 +68,4 @@ a {
 #mainContent {
 	padding-right: 50px;
 	padding-left: 50px;
-}
-
-.homeScreenButtonDiv {
-	padding: 10px;
-}
-
-.homeScreenButton {
-	background-color: black;
-	color: orange;
-	border: .5px;
-	outline: 0;
-	height: 120px;
-	line-height: 30px;
-}
-
-.homeScreenButton:hover {
-	color: white;
-}
-
-.homeScreenButtonIcon {
-	font-size: 35px;
-}
-
-.homeScreenButtonText {
-	font-size: 20px;
-}
-
-
-@media (max-width: 767px) {
-	.homeScreenButtonDiv {
-		padding: 5px;
-	}
 }
