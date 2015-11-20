@@ -14,10 +14,11 @@ a {
     min-height: 80px;
 }
 
-.navbar-brand {
+.navbar-inverse .navbar-brand {
     padding-top: 0px;
     padding-bottom: 0px;
     line-height: 80px;
+    color: white;
 }
 
 .navbar-nav > li > a {
@@ -25,12 +26,7 @@ a {
 }
 
 @media (max-width: 767px) {
-    /*.navbar-nav > li > a {
-	    line-height: 20px;
-	    padding-top: 10px;
-	    padding-bottom: 10px;
-	}*/
-	.navbar-brand {
+	.navbar-inverse .navbar-brand {
 		line-height:30px;
 		padding-top: 10px;
 	    padding-bottom: 10px;
@@ -74,10 +70,34 @@ a {
 	padding-left: 50px;
 }
 
-#editButton, #submitButton, #createNewWikiButton{
-	float: right;
+.homeScreenButtonDiv {
+	padding: 10px;
 }
 
-#articleTitle {
-	word-wrap: break-word;
+.homeScreenButton {
+	background-color: black;
+	color: orange;
+	border: .5px;
+	outline: 0;
+	height: 120px;
+	line-height: 30px;
+}
+
+.homeScreenButton:hover {
+	color: white;
+}
+
+.homeScreenButtonIcon {
+	font-size: 35px;
+}
+
+.homeScreenButtonText {
+	font-size: 20px;
+}
+
+
+@media (max-width: 767px) {
+	.homeScreenButtonDiv {
+		padding: 5px;
+	}
 }
