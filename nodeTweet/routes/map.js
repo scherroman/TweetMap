@@ -23,4 +23,12 @@ router.get('/', function(req, res, next) {
   
 });
 
+router.post('/:article', function(req, res) {
+	var theme = req.body.theme; //Title from webpage body
+	var relatedTerms = req.body.relatedTerms; 
+
+	console.log("theme: ", theme);
+	console.log("relatedTerms: ", relatedTerms);
+});
+
 module.exports = router;
