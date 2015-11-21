@@ -12,7 +12,7 @@ block content
 			a#mainTitle
 				h1= title
 		div#mainContent
-			div.tweetContainer
+			div#tweetContainer
 				div.tweet.panel.panel-default
 					div.tweetContent.panel-body
 						div.tweetUserDiv
@@ -25,12 +25,28 @@ block content
 								p.tweetPlace= tweetPlace
 							div.tweetTimeDiv.col-sm-6
 								p.tweetTime= tweetTime
+				div#nextTweetButtonDiv
+					button#nextTweetButton.textCenter.btn
+						span#nextTweetButtonText Next Tweet
+						span#nextTweetButtonIcon.glyphicon.glyphicon-menu-right
+
 			hr
-			div#prompt
-				h3 Which words best describe the theme of this tweet?
-			div.wordsDiv.row
-				if (tokens.length > 0)
-					each token in tokens
-						div.mapWordButtonDiv.col-sm-3.col-xs-12
-							button.mapWordButton.textCenter.btn.col-xs-12
-								span.homeScreenButtonText #{token}
+			div.themePromptDiv.row
+				div.prompt 
+					h3 What is the general theme of this tweet?
+				div#themeInputDiv.form-group.col-sm-4.col-sm-offset-4.col-xs-6.col-xs-offset-3
+					input#themeInput.form-control(type='text')
+			div.wordPromptDiv.row
+				div.prompt
+					h3 Which words are related to this theme?
+				div.wordsDiv.row
+					if (tokens.length > 0)
+						each token in tokens
+							div.mapWordButtonDiv.col-sm-3.col-xs-12
+								button.mapWordButton.textCenter.btn.col-xs-12
+									span.homeScreenButtonText #{token}
+			hr
+			div#doneDiv
+				div.doneButtonDiv.row
+					button#doneButton.textCenter.btn.col-sm-2.col-sm-offset-5.col-xs-4.col-xs-offset-4
+						span#doneButtonText Done

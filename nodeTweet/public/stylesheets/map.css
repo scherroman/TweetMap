@@ -11,8 +11,9 @@
 
 /* MAP CONTENT */
 
-.tweetContainer {
+#tweetContainer {
 	width: 100%;
+	position: relative;
 }
 
 .tweetContent {
@@ -62,8 +63,54 @@
 	}
 }
 
-#prompt {
+
+#nextTweetButtonDiv {
+	position: absolute;
+	top: 0;
+	bottom: 0px;
+	right: 0px;
+	left: auto;
 	text-align: center;
+}
+
+#nextTweetButton {
+	margin-top: 51px;
+	background-color: transparent;
+}
+
+@media (max-width: 992px) {
+	#nextTweetButtonDiv {
+		position: static;
+	}
+
+	#nextTweetButton {
+		margin-top: 0px;
+		right: 0px;
+		left: auto;
+		background-color: transparent;
+	}
+}
+
+#nextTweetButton:focus {
+	background-image: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+#nextTweetButtonIcon, #nextTweetButtonText {
+	font-size: 20px;
+}
+
+.prompt {
+	text-align: center;
+}
+
+.themePromptDiv > .prompt > h3 {
+	margin-top: 0px;
+}
+
+#themeInputDiv {
+	margin-top: 10px;
 }
 
 .mapWordButtonDiv {
@@ -74,6 +121,9 @@
 	.wordsDiv {
 		padding-right: 50px;
 		padding-left: 50px;
+	}
+	.wordPromptDiv > .prompt > h3 {
+		margin-bottom: 15px;
 	}
 	.mapWordButtonDiv {
 		padding: 5px;
@@ -96,7 +146,6 @@
 .mapWordButton:focus {
 	outline: 0 !important;
 	background-image: none;
-    outline: 0;
     -webkit-box-shadow: none;
     box-shadow: none;
 }
@@ -104,4 +153,26 @@
 .mapWordButton.selected {
 	background-color: orange;
 	color: white;
+}
+
+#doneButton {
+	background-color: black;
+	color: orange;
+	border: none;
+	outline: none;
+	height: 60px;
+	line-height: 30px;
+}
+
+#doneButton:active, #doneButton:focus {
+	color: white;
+	outline: none !important;
+}
+
+#doneButtonText {
+	font-size: 24px;
+}
+
+.doneAlert {
+	margin-top: 20px;
 }
