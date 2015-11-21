@@ -23,7 +23,7 @@ router.get('/', function(req, res, next) {
   
 });
 
-router.post('/:article', function(req, res) {
+router.post('/', function(req, res) {
 	var theme = req.body.theme; //Title from webpage body
 	var relatedTerms = req.body.relatedTerms; 
 
