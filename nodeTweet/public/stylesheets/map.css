@@ -89,12 +89,19 @@
 	white-space: normal;
 }
 
-.mapWordButton:hover,  .homeScreenButton:active, .mapWordButton:focus {
-	background-color: orange;
+.mapWordButton:hover, .mapWordButton:focus {
 	color: white;
+}
+
+.mapWordButton:focus {
 	outline: 0 !important;
 	background-image: none;
     outline: 0;
     -webkit-box-shadow: none;
     box-shadow: none;
+}
+
+.mapWordButton.selected {
+	background-color: orange;
+	color: white;
 }
