@@ -31,7 +31,7 @@ router.post('/', function(req, res) {
 	var relatedTermsLength = relatedTerms.length;
 	for (var i = 0; i < relatedTermsLength; i++) {
 		relatedTerms[i] = relatedTerms[i].toLowerCase();
-		console.log("relatedTerm: "relatedTerms[i]);
+		console.log("relatedTerm: ", relatedTerms[i]);
 	} 
 
 	console.log("theme: ", theme);
