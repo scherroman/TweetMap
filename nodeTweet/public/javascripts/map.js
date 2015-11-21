@@ -78,7 +78,7 @@ $(document).ready(function(){
                     // console.log("SelectedButtonText: ", selectedButtonText);
                 }
 
-                Send the theme & related terms to the server
+                //Send the theme & related terms to the server
                 $.ajax({
                     url: window.location.pathname,
                     type: "POST",
