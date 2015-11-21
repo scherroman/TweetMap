@@ -17,11 +17,11 @@ r.connect( {host: 'localhost', port: 28015}, function(err, conn) {
 			console.log(JSON.stringify(result, null, 2));
 
 			//Add a table:
-			r.db('NodeTweet').tableCreate('tweets', {shards:8, replicas:3}).run(connection, function(err, result) {
+			r.db('NodeTweet').tableCreate('tweets', {shards:3, replicas:3}).run(connection, function(err, result) {
 				if (err) throw err;
 				console.log(JSON.stringify(result, null, 2));
 				//Add a table:
-				r.db('NodeTweet').tableCreate('terms', {shards:8, replicas:3}).run(connection, function(err, result) {
+				r.db('NodeTweet').tableCreate('terms', {shards:3, replicas:3}).run(connection, function(err, result) {
 					if (err) throw err;
 					console.log(JSON.stringify(result, null, 2));
 					process.exit();
