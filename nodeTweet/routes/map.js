@@ -18,18 +18,19 @@ var connection = null;
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
-  var tweetText = "Praise & the Lord$ almighty| in the house, Of God. | Praise Jesus oh lordy.";
+  // var tweetText = "Praise & the Lord$ almighty| in the house, Of God. | Praise Jesus oh lordy.";
   // var tweetText = "'06 NFL MVP 31 TD's in 1 season 5th leading rusher";
   // var tweetText = "Sources: #BlueJays acquire #Athletics’ Jesse Chavez.";
-  // var tweetText = "In other news, my edges are laid, my skin is poppin and I'm educated...shout out to my parents for these genes🙌🏽😂";
+  var tweetText = "In other news, my edges are laid, my skin is poppin and I'm educated...shout out to my parents for these genes🙌🏽😂";
 
   var filteredWords = keyword_extractor.extract(tweetText,{
-                                                                language:"english",
-                                                                remove_digits: true,
-                                                                return_changed_case:true,
-                                                                remove_duplicates: true
-                                                             });
+                                                            language:"english",
+                                                            remove_digits: true,
+                                                            return_changed_case:true,
+                                                            remove_duplicates: true
+                                                          });
 
+  //Remove words with special characters from the filteredWords array
   var wordsWithSpecialCharacters = [];
   var filteredWordsLength = filteredWords.length;
   for (var i = 0; i< filteredWordsLength; i++) {
