@@ -4,6 +4,7 @@ var r = require('rethinkdb');
 var url = require('url');
 var request = require('request-json');
 var hosts = require('../hosts');
+var keyword_extractor = require("keyword-extractor");
 
 var solrRequestClient = request.createClient('http://' + hosts.solrServer + ':8983/');
 
@@ -16,10 +17,40 @@ var connection = null;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+
+  var tweetText = "Praise & the Lord$ almighty| in the house, Of God. | Praise Jesus oh lordy.";
+  // var tweetText = "'06 NFL MVP 31 TD's in 1 season 5th leading rusher";
+  // var tweetText = "Sources: #BlueJays acquire #Athletics’ Jesse Chavez.";
+  // var tweetText = "In other news, my edges are laid, my skin is poppin and I'm educated...shout out to my parents for these genes🙌🏽😂";
+
+  var filteredWords = keyword_extractor.extract(tweetText,{
+                                                                language:"english",
+                                                                remove_digits: true,
+                                                                return_changed_case:true,
+                                                                remove_duplicates: true
+                                                             });
+
+  var wordsWithSpecialCharacters = [];
+  var filteredWordsLength = filteredWords.length;
+  for (var i = 0; i< filteredWordsLength; i++) {
+  	var regx = /^[A-Za-z#]+$/;
+    	if (!regx.test(filteredWords[i])) {
+    		wordsWithSpecialCharacters.push(filteredWords[i]);
+    	}
+  }
+
+  console.log("wordsWithSpecialCharacters: ", wordsWithSpecialCharacters);
+
+	filteredWords = filteredWords.filter( function(word) {
+		return wordsWithSpecialCharacters.indexOf( word ) < 0;
+	});
+
+	console.log("filteredWords final: ", filteredWords);
+
   //Get article title & body from DB entry for title passed in
-  res.render('map', { title: 'Map a Tweet', tweetUser: 'Aaron', tweetText: 'Praise the Lord', 
+  res.render('map', { title: 'Map a Tweet', tweetUser: 'Aaron', tweetText: tweetText, 
   	tweetPlace: 'NYC, New York', tweetTime: '2:00 PM Oct 15 2015', 
-  	tokens:['Praise', 'the', 'Lord'] });
+  	tokens:filteredWords });
   
 });
 
@@ -31,7 +62,6 @@ router.post('/', function(req, res) {
 	var relatedTermsLength = relatedTerms.length;
 	for (var i = 0; i < relatedTermsLength; i++) {
 		relatedTerms[i] = relatedTerms[i].toLowerCase();
-		console.log("relatedTerm: ", relatedTerms[i]);
 	} 
 
 	console.log("theme: ", theme);
