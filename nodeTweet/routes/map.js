@@ -28,7 +28,7 @@ router.post('/', function(req, res) {
 	var relatedTerms = req.body.relatedTerms; 
 
 	console.log("theme: ", theme);
-	console.log("relatedTerms: ", relatedTerms);
+	console.log("relatedTerms: ", relatedTerms[0]);
 });
 
 module.exports = router;
