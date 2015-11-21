@@ -92,7 +92,7 @@ $(document).ready(function(){
                 $.ajax({
                     url: window.location.pathname,
                     type: "POST",
-                    data: {theme: theme, relatedTerms: relatedTerms},
+                    data: {theme: theme, relatedTerms: relatedTermsJsonArray},
                     dataType: "json",
                     success: function (result) {
                         console.log(result);
