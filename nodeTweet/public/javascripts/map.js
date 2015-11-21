@@ -2,6 +2,14 @@ var selectedButtons = [];
 
 //MapWordButton click
 $(document).ready(function(){
+    $("#nextTweetButton").click(function(){
+        //Get next tweet by reloading page to get random tweets
+        location.reload();
+    });
+});
+
+//MapWordButton click
+$(document).ready(function(){
     $(".mapWordButton").click(function(){
         //Select or unselect button
         if ($.inArray(this, selectedButtons) == -1) {

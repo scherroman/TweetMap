@@ -76,6 +76,14 @@
 #nextTweetButton {
 	margin-top: 51px;
 	background-color: transparent;
+	border: 0px;
+}
+
+#nextTweetButton:focus {
+	outline: none;
+	background-image: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
 
 @media (max-width: 992px) {
@@ -89,12 +97,6 @@
 		left: auto;
 		background-color: transparent;
 	}
-}
-
-#nextTweetButton:focus {
-	background-image: none;
-    -webkit-box-shadow: none;
-    box-shadow: none;
 }
 
 #nextTweetButtonIcon, #nextTweetButtonText {
@@ -144,7 +146,7 @@
 }
 
 .mapWordButton:focus {
-	outline: 0 !important;
+	outline: none !important;
 	background-image: none;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -166,7 +168,7 @@
 
 #doneButton:active, #doneButton:focus {
 	color: white;
-	outline: none !important;
+	outline: none;
 }
 
 #doneButtonText {
