@@ -25,10 +25,17 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res) {
 	var theme = req.body.theme; //Title from webpage body
-	var relatedTerms = req.body.relatedTerms; 
+	theme = theme.toLowerCase();
+	var relatedTerms = JSON.parse(req.body.relatedTerms);
+
+	var relatedTermsLength = relatedTerms.length;
+	for (var i = 0; i < relatedTermsLength; i++) {
+		relatedTerms[i] = relatedTerms[i].toLowerCase();
+		console.log(relatedTerms[i]);
+	} 
 
 	console.log("theme: ", theme);
-	console.log("relatedTerms: ", relatedTerms[0]);
+	console.log("relatedTerms: ", relatedTerms);
 });
 
 module.exports = router;

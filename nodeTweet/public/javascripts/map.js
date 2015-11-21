@@ -86,6 +86,8 @@ $(document).ready(function(){
                     // console.log("SelectedButtonText: ", selectedButtonText);
                 }
 
+                var relatedTermsJsonArray = JSON.stringify(relatedTerms);
+
                 //Send the theme & related terms to the server
                 $.ajax({
                     url: window.location.pathname,
