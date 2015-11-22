@@ -1,7 +1,7 @@
 var r = require('rethinkdb');
 var request = require('request-json');
 
-//Var to make POST request to Solr
+//Var to make requests to Solr
 var solrRequestClient = request.createClient('http://' + hosts.solrServer + ':8983/');
 
 //Lets assume the array of relatedTerms is already formatted properly
