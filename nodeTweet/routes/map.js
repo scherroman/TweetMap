@@ -7,8 +7,8 @@ var hosts = require('../hosts');
 var keyword_extractor = require("keyword-extractor");
 
 //Var to make requests to Solr
-// var solrRequestClient = request.createClient('http://' + hosts.solrServer + ':8983/');
-var solrRequestClient = request.createClient('http://localhost:8983/');
+var solrRequestClient = request.createClient('http://' + hosts.solrServer + ':8983/');
+// var solrRequestClient = request.createClient('http://localhost:8983/');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
