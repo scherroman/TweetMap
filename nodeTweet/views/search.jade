@@ -3,6 +3,9 @@ extends layout
 block extraHeader
 	link(rel='stylesheet', href='/stylesheets/search.css')
 
+block extraScript  
+	script(src="/javascripts/search.js")
+
 block content
 	div.container
 		div#titleContent
@@ -10,14 +13,13 @@ block content
 				h1= title
 		div#mainContent
 			div#searchBarDiv
-				form(role="form" method='GET', action='/search', accept-charset='UTF-8')
-					div#searchBarAndButtons.input-group.col-sm-6.col-sm-offset-3
+					div#searchBarAndButtons.input-group.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
 						span.input-group-btn
 							button.searchButton#searchTermButton.btn(type='submit')
 								span.searchIcon.glyphicon.glyphicon-search
 								br
 								span Term
-						input#search-query.form-control(type='text', placeholder='Search by term or theme') 
+						input#search-query.form-control(type='text', placeholder='Search by term or theme',name='searchQuery', autocomplete='off', spellcheck='false') 
 						span.input-group-btn
 							button.searchButton#searchThemeButton.btn(type='submit')
 								span.searchIcon.glyphicon.glyphicon-search

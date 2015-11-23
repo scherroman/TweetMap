@@ -32,7 +32,9 @@ $(document).ready(function(){
 
         $(this).blur();
 
-        var theme = $.trim($('#themeInput').val());
+        var theme = $('#themeInput').val();
+        theme = $.trim(theme);
+        theme = theme.toLowerCase();
         console.log("themeInput: ", theme);
 
         //Remove any current alerts
@@ -56,11 +58,11 @@ $(document).ready(function(){
             $('#doneDiv').append(alert);
         }
         else {
-            var regx = /^[A-Za-z]+$/;
+            var regx = /^([A-Za-z]+)$|^([A-Za-z]+)([\s]{1})([A-Za-z]+)$/;
             if (!regx.test(theme)) {
                 var alert = $('<div>', {
                     "class": "doneAlert alert alert-danger",
-                    text: "Please write the theme in plain english with no spaces!"
+                    text: "Please write the theme in plain english with one or two words!"
                 });
 
                 var dismissButton = $('<a>', {
@@ -98,8 +100,8 @@ $(document).ready(function(){
                         console.log(result);
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
+                        console.log("Ajax request failure");
                         console.log(xhr.status);
-                        console.log(thrownError);
                     }
                 });
             }

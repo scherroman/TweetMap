@@ -17,12 +17,8 @@
 	height: 54px;
 }
 
-.searchButton {
+.searchButton, .searchButton:hover, .searchButton:focus {
 	background-color: orange;
-	color: white;
-}
-
-.searchIcon {
 	color: white;
 }
 
@@ -32,3 +28,8 @@
     -webkit-box-shadow: none;
     box-shadow: none;
 }
+
+.searchIcon {
+	color: white;
+}
+
