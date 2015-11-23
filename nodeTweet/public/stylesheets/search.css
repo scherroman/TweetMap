@@ -17,6 +17,10 @@
 	height: 54px;
 }
 
+.searchBarButton {
+	width: 72px;
+}
+
 .searchBarButton, .searchBarButton:hover, .searchBarButton:focus {
 	background-color: orange;
 	color: white;
