@@ -255,7 +255,7 @@ function dateFormatterSingle(tweet) {
     var time = d.toLocaleTimeString(); // 12:29:41 AM
     time = time.substring(0, time.lastIndexOf(':')) + " " + time.substring(time.length-2); // 12:29 PM
 
-    var date = date.toLocaleDateString(); // 11/23/2015
+    var date = d.toLocaleDateString(); // 11/23/2015
     date = date.substring(date.indexOf("/")+1, date.lastIndexOf("/")) + " "; // 23 
     date = date + monthConvert(d.substring(0, d.indexOf("/"))) + " "; // 23 Nov 
     date = date + date.substring(d.lastIndexOf("/")); // 23 Nov 2015
