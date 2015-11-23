@@ -17,7 +17,7 @@ var connection = null;
 /* GET home page. */
 router.get('/', function(req, res, next) {
   //Get article title & body from DB entry for title passed in
-  res.render('search', { title: 'Search' });
+  res.render('search', { title: 'Search for Tweets' });
   
 });
 

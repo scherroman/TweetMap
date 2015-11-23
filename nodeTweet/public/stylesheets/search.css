@@ -1,1 +1,34 @@
 @import url("main.css");
+
+/* MAIN CONTENT */
+
+@media (max-width: 767px) {
+	#mainContent {
+		padding-right: 0px;
+		padding-left: 0px;
+	}
+}
+
+#searchBarDiv {
+	margin-top: 20px;
+}
+
+#search-query {
+	height: 54px;
+}
+
+.searchButton {
+	background-color: orange;
+	color: white;
+}
+
+.searchIcon {
+	color: white;
+}
+
+.searchButton:focus {
+	outline: none !important;
+	background-image: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}

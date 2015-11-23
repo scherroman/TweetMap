@@ -8,3 +8,18 @@ block content
 		div#titleContent
 			a#mainTitle
 				h1= title
+		div#mainContent
+			div#searchBarDiv
+				form(role="form" method='GET', action='/search', accept-charset='UTF-8')
+					div#searchBarAndButtons.input-group.col-sm-6.col-sm-offset-3
+						span.input-group-btn
+							button.searchButton#searchTermButton.btn(type='submit')
+								span.searchIcon.glyphicon.glyphicon-search
+								br
+								span Term
+						input#search-query.form-control(type='text', placeholder='Search by term or theme') 
+						span.input-group-btn
+							button.searchButton#searchThemeButton.btn(type='submit')
+								span.searchIcon.glyphicon.glyphicon-search
+								br
+								span Theme
