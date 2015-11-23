@@ -12,43 +12,101 @@ var solrRequestClient = request.createClient('http://' + hosts.solrServer + ':89
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  //Here we want to obtain a random tweet from DB
+  //Desired URL for Solr GET request has to look like this: 
+  //localhost:8983/solr/tweets/query?q=*:*&sort=random_12939291%20desc
 
-  // var tweetText = "Praise & the Lord$ almighty| in the house, Of God. | Praise Jesus oh lordy.";
-  // var tweetText = "'06 NFL MVP 31 TD's in 1 season 5th leading rusher";
-  // var tweetText = "Sources: #BlueJays acquire #Athletics’ Jesse Chavez.";
-  var tweetText = "In other news, my edges are laid, my skin is poppin and I'm educated...shout out to my parents for these genes🙌🏽😂";
+  var seed = Math.random()*10000000;
 
-  var filteredWords = keyword_extractor.extract(tweetText,{
-                                                            language:"english",
-                                                            remove_digits: true,
-                                                            return_changed_case:true,
-                                                            remove_duplicates: true
-                                                          });
+  var solrUrl = 'solr/tweets/query?q=*:*&sort=random_' + seed + "%20desc";
 
-  //Remove words with special characters from the filteredWords array
-  var wordsWithSpecialCharacters = [];
-  var filteredWordsLength = filteredWords.length;
-  for (var i = 0; i< filteredWordsLength; i++) {
-  	var regx = /^[A-Za-z#]+$/;
-    	if (!regx.test(filteredWords[i])) {
-    		wordsWithSpecialCharacters.push(filteredWords[i]);
-    	}
-  }
+  //WE USE SOLR TO OBTAIN KEY OF RANDOM TWEET TO RETRIEVE FROM DB
+  solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) {
+    
+    if (!error && response.statusCode == 200) {
 
-  console.log("wordsWithSpecialCharacters: ", wordsWithSpecialCharacters);
+      var uuid = body.response.docs[0].id;
 
-	filteredWords = filteredWords.filter( function(word) {
-		return wordsWithSpecialCharacters.indexOf( word ) < 0;
-	});
+      //We establish connection to DB
+      r.connect( {host: 'localhost', port: 28015}, function(err, conn) {
 
-	console.log("filteredWords final: ", filteredWords);
+        if (err) throw err;
+        //HERE WE ACCESS DB FOR ACTUAL TWEET
+        r.db("NodeTweet").table("tweets").get(uuid).run(conn, function(err, tweet) {
 
-  //Get article title & body from DB entry for title passed in
-  res.render('map', { title: 'Map a Tweet', tweetUser: 'Aaron', tweetText: tweetText, 
-  	tweetPlace: 'NYC, New York', tweetTime: '2:00 PM Oct 15 2015', 
-  	tokens:filteredWords });
-  
-});
+          if (err) throw err;
+
+          var tweetText = tweet.text;
+
+          var filteredWords = keyword_extractor.extract(tweetText,{
+                                                                language:"english",
+                                                                remove_digits: true,
+                                                                return_changed_case:true,
+                                                                remove_duplicates: true
+                                                              });
+
+          //Remove words with special characters from the filteredWords array
+          var wordsWithSpecialCharacters = [];
+          var filteredWordsLength = filteredWords.length;
+          for (var i = 0; i< filteredWordsLength; i++) {
+            var regx = /^[A-Za-z#]+$/;
+            if (!regx.test(filteredWords[i])) {
+              wordsWithSpecialCharacters.push(filteredWords[i]);
+            }
+          }
+
+          filteredWords = filteredWords.filter( function(word) {
+            return wordsWithSpecialCharacters.indexOf( word ) < 0;
+          });
+
+          tweet = dateFormatterSingle(tweet);
+
+          res.render('map', { title: 'Map a Tweet', tweetUser: tweet.user, tweetText: tweetText, 
+          tweetPlace: tweet.place, tweetTime: tweet.timestamp_ms, 
+          tokens:filteredWords });
+        })//Closing bracket for DB access
+      })//Closing bracket for DB connection
+    }//Closing bracket for if (!error && response.statusCode == 200) {
+  })//Closing bracket for Solr GET request
+})//Closing bracket for router GET request
+      
+//       // var tweetText = "Praise & the Lord$ almighty| in the house, Of God. | Praise Jesus oh lordy.";
+//       // var tweetText = "'06 NFL MVP 31 TD's in 1 season 5th leading rusher";
+//       // var tweetText = "Sources: #BlueJays acquire #Athletics’ Jesse Chavez.";
+//       // var tweetText = "In other news, my edges are laid, my skin is poppin and I'm educated...shout out to my parents for these genes🙌🏽😂";
+      
+
+//       var filteredWords = keyword_extractor.extract(tweetText,{
+//                                                                 language:"english",
+//                                                                 remove_digits: true,
+//                                                                 return_changed_case:true,
+//                                                                 remove_duplicates: true
+//                                                               });
+
+//       //Remove words with special characters from the filteredWords array
+//       var wordsWithSpecialCharacters = [];
+//       var filteredWordsLength = filteredWords.length;
+//       for (var i = 0; i< filteredWordsLength; i++) {
+//       	var regx = /^[A-Za-z#]+$/;
+//       	if (!regx.test(filteredWords[i])) {
+//       		wordsWithSpecialCharacters.push(filteredWords[i]);
+//       	}
+//       }
+
+//       console.log("wordsWithSpecialCharacters: ", wordsWithSpecialCharacters);
+
+//     	filteredWords = filteredWords.filter( function(word) {
+//     		return wordsWithSpecialCharacters.indexOf( word ) < 0;
+//     	});
+
+//     	console.log("filteredWords final: ", filteredWords);
+
+//       //Get article title & body from DB entry for title passed in
+//       res.render('map', { title: 'Map a Tweet', tweetUser: 'Aaron', tweetText: tweetText, 
+//       	tweetPlace: 'NYC, New York', tweetTime: '2:00 PM Oct 15 2015', 
+//       	tokens:filteredWords });
+//     )};//Closing bracket for Solr GET request
+// });//Closing bracket for GET request
 
 router.post('/', function(req, res) {
 	var theme = req.body.theme; //Title from webpage body
@@ -169,4 +227,66 @@ router.post('/', function(req, res) {
   })//Closing bracket for Solr theme query
 });//Closing bracket for post request
 
+function dateFormatter(tweetArray) {
+/*tweetArray will be filled with tweets in the following format: 
+{ "id": "4c6d3a58-7402-4b1a-9dd8-de7ee36a05f3" , 
+"place": "New York, USA" , 
+"text": "My boy Bieber just followed me on Twitter. Today is a good day https://t.co/2OfU6JMabX" , 
+"timestamp_ms": "1447105319795" , "user": "HAleYeAhh" }
+We want time to be in the following format: 8:33 PM - 22 Nov 2015
+*/
+  for(i = 0; i < tweetArray.length; i++) {
+    var d = new Date(parseInt(tweetArray[i].timestamp_ms));
+    var time = d.toLocaleTimeString(); // 12:29:41 AM
+    time = time.substring(0, time.lastIndexOf(':')) + " " + time.substring(time.length-2); // 12:29 PM
+
+    var date = d.toLocaleDateString(); // 11/23/2015
+    date = d.substring(d.indexOf("/")+1, d.lastIndexOf("/")) + " "; // 23 
+    date = date + monthConvert(d.substring(0, d.indexOf("/"))) + " "; // 23 Nov 
+    date = date + d.substring(d.lastIndexOf("/")); // 23 Nov 2015
+
+    var finalDate = time + " - " + date;
+    tweetArray[i].timestamp_ms = finalDate;
+  }
+  return tweetArray;
+}
+function dateFormatterSingle(tweet) {
+    var d = new Date(parseInt(tweet.timestamp_ms));
+    var time = d.toLocaleTimeString(); // 12:29:41 AM
+    time = time.substring(0, time.lastIndexOf(':')) + " " + time.substring(time.length-2); // 12:29 PM
+
+    var date = d.toLocaleDateString(); // 11/23/2015
+    date = d.substring(d.indexOf("/")+1, d.lastIndexOf("/")) + " "; // 23 
+    date = date + monthConvert(d.substring(0, d.indexOf("/"))) + " "; // 23 Nov 
+    date = date + d.substring(d.lastIndexOf("/")); // 23 Nov 2015
+    var finalDate = time + " - " + date;
+    tweet.timestamp_ms = finalDate;
+
+    return tweet;
+}
+function monthConvert(m){
+  if(m === 1)
+    return "Jan";
+  else if (m === 2)
+    return "Feb";
+  else if (m === 3)
+    return "Mar";
+  else if (m === 4)
+    return "Apr";
+  else if (m === 5)
+    return "May";
+  else if (m === 6)
+    return "Jun";
+  else if (m === 7)
+    return "Jul";
+  else if (m === 8)
+    return "Aug";
+  else if (m === 9)
+    return "Sep";
+  else if (m === 10)
+    return "Oct";
+  else if (m === 11)
+    return "Nov";
+  else return "Dec";
+}
 module.exports = router;

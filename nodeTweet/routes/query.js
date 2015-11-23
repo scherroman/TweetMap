@@ -91,7 +91,7 @@ solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) 
 
 							})//Closing bracket of DB access for tweet
 						}//Closing bracket of for-loop
-						dateFormatter(tweetsToShow);
+						tweetsToShow = dateFormatter(tweetsToShow);
 						//HERE tweetsToShow IS THE ARRAY OF TWEETS TO DISPLAY
 						res.setHeader('content-type', 'application/vnd.api+json');
 						res.end(JSON.stringify(response));
@@ -122,6 +122,8 @@ We want time to be in the following format: 8:33 PM - 22 Nov 2015
 
 		var finalDate = time + " - " + date;
 		tweetArray[i].timestamp_ms = finalDate;
+	}
+	return tweetArray;
 }
 function monthConvert(m){
 	if(m === 1)
