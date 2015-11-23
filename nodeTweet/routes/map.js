@@ -86,8 +86,7 @@ router.post('/', function(req, res) {
 
           var jsonRelatedTerms = [];
           for(i = 0; i < rTerms.length; i++) {
-              var jsonTerm = '{"term":"' + rTerms[i] + '", "count": 1}';
-              jsonTerm = JSON.parse(jsonTerm);
+              var jsonTerm = {term:rterms[i], count:1}
               jsonRelatedTerms.push(jsonTerm)
           }
           //We insert to DB

@@ -51,22 +51,23 @@ solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) 
 					return b.count - a.count;
 				})//Closing bracket of compare function
 				//NOW THAT TERMS ARE SORTED BASED ON COUNT (descending order), WE MUST FORMAT STRING TO PERFORM SOLR QUERY
-				//This is an example of a final URL: http://localhost:8983/solr/tweets/select?q=text%3A(news+OR+good+OR+bad)&wt=json&indent=true&defType=edismax&bq=bad%5E100&stopwords=true&lowercaseOperators=true
+				//This is an example of a final URL: http://localhost:8983/solr/tweets/query?q=text%3A(good+OR+day+OR+boy)&defType=edismax&bq=day%5E1000+AND+good%5E100+AND+boy%5E4000
 				//where the exponent of bq denotes how much each term is boosted by (default of 1). To "negate" a term: (*:* -xxx)^999  you boost everything but the term
 				//Since each term must be added to the "queries" and to the "boost queries", 2 strings should be concatenated for final result
-				var q = null;
-				var bq = null;
+				var q = "(";
+				var bq = "defType=edismax&bq=";
 				for(i = 0; i < sortedRelatedTerms.length; i++) {
 					if(i != sortedRelatedTerms.length-1) {
-						bq = "bq=text:" + sortedRelatedTerms[i].term + "^" + sortedRelatedTerms[i].count + "&";
+						bq = bq + sortedRelatedTerms[i].term + "%5" + sortedRelatedTerms[i].count + "+AND+";
+						q = q + sortedRelatedTerms[i] + "+OR+";
 					}
 					else {
-						bq = "bq=text:" + sortedRelatedTerms[i].term + "^" + sortedRelatedTerms[i].count;
+						bq = sortedRelatedTerms[i].term + "%5" + sortedRelatedTerms[i].count;
+						q = q + sortedRelatedTerms[i] + ")&";
 					}
-					q = "q=text:" + sortedRelatedTerms[i].term + "&";
 				}//Closing bracket of for-loop
 				//q and bg are formatted, so now we have to format into URL for query
-				var relatedTermsSolrUrl = 'solr/tweets/query?' + q + bq;
+				var relatedTermsSolrUrl = 'solr/tweets/query?q=text%3A' + q + bq;
 
 				//NOW WE MUST PERFORM SOLR QUERY FOR UUIDs OF TWEETS
 				solrRequestClient.get(relatedTermsSolrUrl, function solrRequestQuery(error, response, body) {
