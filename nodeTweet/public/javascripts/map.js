@@ -104,6 +104,8 @@ $(document).ready(function(){
                         console.log(xhr.status);
                     }
                 });
+
+                location.reload();
             }
         }
     });
