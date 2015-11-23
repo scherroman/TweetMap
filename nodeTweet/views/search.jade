@@ -15,17 +15,17 @@ block content
 			div#searchBarDiv
 				div#searchBarAndButtons.input-group.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
 					span.input-group-btn
-						button.searchButton#searchTermButton.btn(type='submit')
+						button.searchBarButton.searchButton#searchTermButton.btn(type='submit')
 							span.searchIcon.glyphicon.glyphicon-search
 							br
 							span Term
-					input#search-query.form-control(type='text', placeholder='Search by term or theme',name='searchQuery', autocomplete='off', spellcheck='false') 
+					input#search-query.form-control(type='text', placeholder='Search by term or theme', autocomplete='off', spellcheck='false') 
 					span.input-group-btn
-						button.searchButton#searchThemeButton.btn(type='submit')
+						button.searchBarButton.searchButton#searchThemeButton.btn(type='submit')
 							span.searchIcon.glyphicon.glyphicon-search
 							br
 							span Theme
-			if (dataToRender)
+			if (searchResultsToRender)
 				div#searchResultsDiv
 					if (numTotalTweets > 0)
 						h2 #{searchInput} 
@@ -48,5 +48,17 @@ block content
 															p.tweetPlace= tweetPlace
 														div.tweetTimeDiv.col-sm-6
 															p.tweetTime= tweetTime
+							if (prevTweetsAvaialable || nextTweetsAvailable)
+								div.paginationButtonsDiv.row
+									if (prevTweetsAvaialable)
+										div.paginationButtonDiv.col-xs-6
+											button#prevButton.paginationButton.searchButton.textCenter.btn
+												span.paginationButtonIcon.glyphicon.glyphicon-menu-left
+												span.paginationButtonText Previous
+									if (nextTweetsAvailable)
+										div.paginationButtonDiv.col-xs-6
+											button#nextButton.paginationButton.searchButton.textCenter.btn
+												span.paginationButtonText Next
+												span.paginationButtonIcon.glyphicon.glyphicon-menu-right
 					else
 						h4 No Tweets match this #{type}

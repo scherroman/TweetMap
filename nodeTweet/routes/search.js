@@ -5,8 +5,9 @@ var url = require('url');
 var request = require('request-json');
 var hosts = require('../hosts');
 
-var TERM_SEARCH = 'term'
-var THEME_SEARCH = 'theme'
+var TERM_SEARCH = 'term';
+var THEME_SEARCH = 'theme';
+var NUM_TWEETS_TO_RETURN = 20;
 
 var solrRequestClient = request.createClient('http://' + hosts.solrServer + ':8983/');
 
@@ -27,7 +28,7 @@ router.get('/', function(req, res, next) {
   }
   else {
   	//Get article title & body from DB entry for title passed in
-  	res.render('search', { "title": 'Search for Tweets', "dataToRender": false});
+  	res.render('search', { "title": 'Search for Tweets', "searchResultsToRender": false});
   }
 });
 
@@ -58,7 +59,9 @@ handleSearchRequest = function(req, res, next) {
 	tweetPlace = 'NYC, New York';
 	tweetTime = '8:33 PM - 22 Nov 2015';
 
-	numTotalTweets = 1000 //Test value
+	var numTotalTweets = 1000 //Test value
+  var nextTweetsAvailable = true;
+  var prevTweetsAvaialable = true;
 	topRelatedTerms = ['lion', 'cup', 'fool', 'andy', 'huh', 'what', 'gum'];
 	topRelatedTerms = topRelatedTerms.join(", ");
 
@@ -72,16 +75,18 @@ handleSearchRequest = function(req, res, next) {
 
 	var tweets = [];
 
-	var numTweets = 10; //test value
+	var numTweets = NUM_TWEETS_TO_RETURN; //test value
 	for (var i = 0; i < numTweets; i++) {
 		tweets[i] = tweet;
 	}
 
 	res.render('search', { "title": 'Search for Tweets', 
-												 "dataToRender": true,
+												 "searchResultsToRender": true,
 												 "numTotalTweets": numTotalTweets, 
 												 "topRelatedTerms": topRelatedTerms,
 												 "tweets": tweets,
+												 "prevTweetsAvaialable": prevTweetsAvaialable,
+												 "nextTweetsAvailable": nextTweetsAvailable,
 												 "type": searchType,
 												 "searchInput": searchInput
 											 });

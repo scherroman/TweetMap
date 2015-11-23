@@ -17,12 +17,12 @@
 	height: 54px;
 }
 
-.searchButton, .searchButton:hover, .searchButton:focus {
+.searchBarButton, .searchBarButton:hover, .searchBarButton:focus {
 	background-color: orange;
 	color: white;
 }
 
-.searchButton:focus {
+.searchBarButton:focus {
 	outline: none !important;
 	background-image: none;
     -webkit-box-shadow: none;
@@ -31,6 +31,29 @@
 
 .searchIcon {
 	color: white;
+}
+
+/* PAGINATION CONTROL */
+
+.paginationButtonDiv {
+	text-align: center;
+}
+
+.paginationButton {
+	margin-top: 20px;
+	background-color: transparent;
+	border: 0px;
+}
+
+.paginationButton:focus {
+	outline: none !important;
+	background-image: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.paginationButtonText, .paginationButtonIcon {
+	font-size: 20px;
 }
 
 /* SEARCH RESULTS CONTENT */
