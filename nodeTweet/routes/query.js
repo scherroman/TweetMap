@@ -17,8 +17,8 @@ solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) 
 	//What we do if we successfuly make the query
 	if (!error && response.statusCode == 200) {
 
-		// body.response.docs now contains the JSON with format {term:term, uuid:uuid, relatedTerms: {r1, r2, r3...}}
-		var uuid = body.response.docs.id;
+		// body.response.docs now contains the JSON with format {term:term, id:uuid, relatedTerms: {r1, r2, r3...}}
+		var uuid = body.response.docs[0].id;
 
 		//NOW THAT WE HAVE UUID, WE MUST LOOK FOR RELATED TERMS ON DB
 		//Establishing connection to DB
@@ -28,11 +28,11 @@ solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) 
 			//NOW THAT CONNECTION WAS ESTABLISHED, WE HAVE TO ACCESS DB
 			r.db('NodeTweet').table('terms').get(uuid).run(conn, function(err, theme){
 				if (err) throw err;
-				//Format of theme should be the following: {term:theme, relatedTerms:[{rTerm:rTerm, count:0}], uuid:uuid}
+				//Format of theme should be the following: {term:theme, relatedTerms:[{term:rTerm, count:0}], id:uuid}
 				//Here we must format relatedTerms based on weight for Solr query
 
 				/*
-				theme should be in the following format: {term:theme, relatedTerms:[{rTerm:rTerm, count:0}], uuid:uuid}
+				theme should be in the following format: {term:theme, relatedTerms:[{term:rTerm, count:0}], id:uuid}
 				HERE WE HAVE TO ORGANIZE THE RELATED TERMS IN AN ARRAY BASED ON COUNT
 				WHERE THE FIRST ELEMENT HAS THE HIGHEST COUNT TO BE FORMATTED INTO SOLR RETRIEVAL
 				For instance: (source: http://stackoverflow.com/questions/3088907/in-solr-can-i-apply-a-boost-to-each-term-in-a-phrase)
@@ -40,8 +40,6 @@ solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) 
 				bq=(title:The)^1&bq=(title:quick)^2&bq=(title:brown)^2
 				where bq = boostQuery and is used for ranking of terms
 				*/
-
-				var numRelatedTerms = theme.relatedTerms.length;
 
 				var sortedRelatedTerms = theme.relatedTerms;
 				
@@ -78,32 +76,27 @@ solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) 
 						var tweetsToObtain = body.response.docs;
 						
 						//String to render
-						var tweetsToShow = "[ ";
+						var tweetsToShow = [];
 
 						for(i = 0; i < tweetsToObtain.length; i++) {
 
-							var currentUUID = JSON.stringify(tweetsToObtain[i].uuid);
+							var currentUUID = tweetsToObtain[i].id;
 							
 							//HERE WE OBTAIN EACH OF THE TWEETS TO FORMAT INTO ARRAY
-							r.db('NodeTweet').table('terms').get(currentUUID).run(conn, function(err, tweet) {
+							r.db('NodeTweet').table('tweets').get(currentUUID).run(conn, function(err, tweet) {
 								if (err) throw err;
 								
-								if(i === tweetsToObtain.length-1) {
-									tweetsToShow += JSON.stringify(tweet) + "]";
-								}
-								else {
-									tweetsToShow += JSON.stringify(tweet) + ",";
-								}
+								tweetsToShow.push(tweet);
 
 							})//Closing bracket of DB access for tweet
 						}//Closing bracket of for-loop
 
-						//HERE tweetsToShow HAS THE ARRAY OF TWEETS TO DISPLAY
+						//HERE tweetsToShow IS THE ARRAY OF TWEETS TO DISPLAY
 						res.setHeader('content-type', 'application/vnd.api+json');
 						res.end(JSON.stringify(response));
 					}//Closing bracket of "if (!error && response.statusCode == 200)"
 				})//Closing bracket for Solr query for tweets with related terms
 			})//Closing bracket of DB access for related terms
 		})//Closing bracket of DB connection
-	}//closing bracket of "if (!error && response.statusCode == 200)"
-}//closing bracket of solrRequestClient
+	}//Closing bracket of "if (!error && response.statusCode == 200)"
+}//Closing bracket of solrRequestClient
