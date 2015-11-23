@@ -9,7 +9,7 @@ var searchTerm = null;
 var solrRequestClient = request.createClient('http://' + hosts.solrServer + ':8983/');
 
 //String manipulation for Solr query where term:searchTerm
-var solrUrl = 'solr/articles/query?q=' + searchRequest + '&rows=10'
+var solrUrl = 'solr/terms/query?q=' + searchRequest + '&rows=10'
 
 //Solr GET request
 solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) {
@@ -18,7 +18,7 @@ solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) 
 	if (!error && response.statusCode == 200) {
 
 		// body.response.docs now contains the JSON with format {term:term, uuid:uuid, relatedTerms: {r1, r2, r3...}}
-		var uuid = body.response.docs.uuid;
+		var uuid = body.response.docs.id;
 
 		//NOW THAT WE HAVE UUID, WE MUST LOOK FOR RELATED TERMS ON DB
 		//Establishing connection to DB
@@ -68,7 +68,7 @@ solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) 
 					q = "q=text:" + sortedRelatedTerms[i].term + "&";
 				}//Closing bracket of for-loop
 				//q and bg are formatted, so now we have to format into URL for query
-				var relatedTermsSolrUrl = 'solr/articles/query?' + q + bq;
+				var relatedTermsSolrUrl = 'solr/tweets/query?' + q + bq;
 
 				//NOW WE MUST PERFORM SOLR QUERY FOR UUIDs OF TWEETS
 				solrRequestClient.get(relatedTermsSolrUrl, function solrRequestQuery(error, response, body) {

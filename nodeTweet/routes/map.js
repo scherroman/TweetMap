@@ -84,9 +84,15 @@ router.post('/', function(req, res) {
 
           if (err) throw err;
 
+          var jsonRelatedTerms = [];
+          for(i = 0; i < rTerms.length; i++) {
+              var jsonTerm = '{"term":"' + rTerms[i] + '", "count": 1}';
+              jsonTerm = JSON.parse(jsonTerm);
+              jsonRelatedTerms.push(jsonTerm)
+          }
           //We insert to DB
           r.db('NodeTweet').table('terms').insert(
-            {term:themeForQuery, relatedTerms:rTerms}).run(conn, function(err, result) {
+            {term:themeForQuery, relatedTerms:jsonRelatedTerms}).run(conn, function(err, result) {
               //where rTerms has following format: [{term:term, count:0}, ....]
               if (err) throw err;
 
@@ -114,7 +120,7 @@ router.post('/', function(req, res) {
       //NOW WE MUST ACCOUNT FOR THE INSTANCES WHERE THE TERM DOES EXIST ALREADY
       else {
         //this variable should have the uuid from the object (doc) that was in the following format: {term:theme, relatedTerms:[{term:term, count:0}], uuid:uuid}
-        var uuidToRetrive = body.response.doc[0].id;
+        var uuidToRetrive = body.response.docs[0].id;
 
         //BEFORE ACCESS, WE MUST MAKE CONNECTION TO DB
         r.connect( {host: 'localhost', port: 28015}, function(err, conn) {
@@ -133,13 +139,12 @@ router.post('/', function(req, res) {
           //HERE WE MUST ACCESS DB USING UUID FOR RETRIEVAL OF RELATED TERMS
           r.db('NodeTweet').table('terms').get(uuidToRetrive).run(conn, function(err, theme) {
             if (err) throw err;
-
             //HERE WE MUST UPDATE THE RELATED TERMS ARRAY TO UPDATE COUNT AND THEN UPDATE FIELD OF OBJECT IN DB
             var arrayFromDB = theme.relatedTerms;
             for(i = 0; i < rTerms.length; i++) {
               var wasFound = false;
               for(j = 0; j < arrayFromDB.length; j++) {
-                if(arrayFromDB[j].term === rTerms[i].term) { //rTerms MIGHT NEED TO BE REFORMATTED
+                if(arrayFromDB[j].term === rTerms[i]) { 
                   arrayFromDB[j].count++;
                   wasFound = true;
                 }
@@ -151,11 +156,12 @@ router.post('/', function(req, res) {
             }
             //arrayFromDB WAS UPDATED SO WE HAVE TO UPDATE IT IN DB
 
-            r.db('NodeTweet').table('terms').get(uuidToRetrive).update({relatedTerms: arrayFromDB})
-            .run(conn, function(err, theme) {
+            r.db('NodeTweet').table('terms').get(uuidToRetrive).update(
+              {relatedTerms: arrayFromDB})
+            .run(conn, function(err, result) {
               if (err) throw err;
 
-              console.log(theme)
+              console.log(result)
             })//Closing bracket of DB update
           })//Closing bracket for access to DB for theme retrieval 
         })//Closing bracket for DB connection
