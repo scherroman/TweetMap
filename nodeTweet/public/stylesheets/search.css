@@ -33,3 +33,61 @@
 	color: white;
 }
 
+/* SEARCH RESULTS CONTENT */
+
+#searchResultsDiv {
+	text-align: center;
+}
+
+.tweetContainer {
+	width: 100%;
+	position: relative;
+}
+
+.tweetContent {
+	padding: 0px;
+}
+
+.tweet {
+	background-color: white;
+	color: black;
+    border-radius: 4px;
+    border: 1px solid #e1e8ed;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 15px; 
+    padding: 15px;
+    max-width: 500px;
+
+    margin: 20px auto;
+}
+
+.tweetTextDiv, .tweetFooter {
+	margin-top: 15px;
+}
+
+.tweetUser {
+	font-weight: bold;
+}
+
+.tweetPlace {
+	color: gray;
+	text-align: left;
+	margin-bottom: 5px;
+}
+
+.tweetTime {
+	color: gray;
+	text-align: right;
+	margin-bottom: 5px;
+}
+
+@media (max-width: 767px) {
+	.tweetPlace {
+		margin-bottom: 10px;
+	}
+	.tweetTime {
+		text-align: left;
+	}
+}
+

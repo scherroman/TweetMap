@@ -13,15 +13,39 @@ block content
 				h1= title
 		div#mainContent
 			div#searchBarDiv
-					div#searchBarAndButtons.input-group.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
-						span.input-group-btn
-							button.searchButton#searchTermButton.btn(type='submit')
-								span.searchIcon.glyphicon.glyphicon-search
-								br
-								span Term
-						input#search-query.form-control(type='text', placeholder='Search by term or theme',name='searchQuery', autocomplete='off', spellcheck='false') 
-						span.input-group-btn
-							button.searchButton#searchThemeButton.btn(type='submit')
-								span.searchIcon.glyphicon.glyphicon-search
-								br
-								span Theme
+				div#searchBarAndButtons.input-group.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
+					span.input-group-btn
+						button.searchButton#searchTermButton.btn(type='submit')
+							span.searchIcon.glyphicon.glyphicon-search
+							br
+							span Term
+					input#search-query.form-control(type='text', placeholder='Search by term or theme',name='searchQuery', autocomplete='off', spellcheck='false') 
+					span.input-group-btn
+						button.searchButton#searchThemeButton.btn(type='submit')
+							span.searchIcon.glyphicon.glyphicon-search
+							br
+							span Theme
+			if (dataToRender)
+				div#searchResultsDiv
+					if (numTotalTweets > 0)
+						h4 #{numTotalTweets} results
+						if (type == "theme")
+							h5 Related Terms: #{topRelatedTerms}
+						if (tweets.length > 0)
+							div#tweets.row
+								each tweet in tweets
+										div#tweetContainer.col-md-6
+											div.tweet.panel.panel-default
+												div.tweetContent.panel-body
+													div.tweetUserDiv
+														p.tweetUser= '@' + tweetUser
+													div.tweetTextDiv
+														p.tweetText= tweetText
+													hr
+													div.tweetFooter.row
+														div.tweetPlaceDiv.col-sm-6
+															p.tweetPlace= tweetPlace
+														div.tweetTimeDiv.col-sm-6
+															p.tweetTime= tweetTime
+					else
+						h4 No Tweets match this #{type}

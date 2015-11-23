@@ -1,4 +1,7 @@
-var TWEET_REQUEST_COUNT = 10;
+var TERM_SEARCH = 'term'
+var THEME_SEARCH = 'theme'
+
+var tweetIndexCount = 0;
 
 //searchButton click
 $(document).ready(function(){
@@ -8,8 +11,8 @@ $(document).ready(function(){
 
     	var searchQuery = {
     		type: null,
-    		tweetStartingIndex: 0,
-    		numTweetsRequested: TWEET_REQUEST_COUNT
+            input: null,
+    		count: -1,
     	};
 
     	//Term Search
@@ -19,8 +22,9 @@ $(document).ready(function(){
     		term = $.trim(term);
     		term = term.toLowerCase();
 
-    		searchQuery.type = 'termSearch';
-    		searchQuery.term = term;
+    		searchQuery.type = TERM_SEARCH;
+    		searchQuery.input = term;
+            searchQuery.count = 0;
     	}
     	//Theme Search
     	else if ($(this).attr('id') == 'searchThemeButton') {
@@ -29,27 +33,64 @@ $(document).ready(function(){
     		theme = $.trim(theme);
     		theme = theme.toLowerCase();
 
-    		searchQuery.type = 'termSearch';
-    		searchQuery.theme = theme;
+    		searchQuery.type = THEME_SEARCH;
+    		searchQuery.input = theme;
+            searchQuery.count = 0;
     	}
 
     	console.log("SearchQuery: ", searchQuery);
 
-    	if (searchQuery.type != null) {
+    	if (searchQuery.type) {
+
+            //Form query      
+            var query = $.param({
+                type: searchQuery.type, 
+                input: searchQuery.input,
+                count: searchQuery.count
+            });
+
+            //Reload page with query
+            var url = [location.protocol, '//', location.host, location.pathname].join('');
+            url = url.concat("?").concat(query);
+            window.location.href = url;
+
 	    	//Send the theme & related terms to the server
-	        $.ajax({
-	            url: window.location.pathname,
-	            type: "GET",
-	            data: {searchQuery: searchQuery},
-	            dataType: "json",
-	            success: function (result) {
-	                console.log(result);
-	            },
-	            error: function (xhr, ajaxOptions, thrownError) {
-	            	console.log("Ajax request failure");
-	                console.log(xhr.status);
-	            }
-	        });
+	        // $.ajax({
+	        //     url: window.location.pathname,
+	        //     type: "GET",
+	        //     data: {searchQuery: searchQuery},
+	        //     dataType: "json",
+         //        error: function (xhr, ajaxOptions, thrownError) {
+         //            console.log("Ajax request failure");
+         //            console.log(xhr.status);
+         //        },
+	        //     success: function (result) {
+	        //         // console.log(result);
+         //         //    console.log(":tweets: ", result.tweets);
+
+         //         //    var tweets = result.tweets;
+         //         //    var numTweetsReturned = tweets.length;
+         //         //    var numTotalTweets = result.numTotalTweets;
+
+         //         //    if (tweets) {
+         //         //        if (numTotalTweets > 0) {
+
+         //         //            if (tweets.length > 0) {
+
+         //         //            }
+         //         //            else {
+         //         //                //No more tweets to display
+         //         //            }
+         //         //        }
+         //         //        else {
+         //         //            //Search returned zero tweets
+         //         //        }
+         //         //    }
+         //         //    else {
+         //         //        console.log("Error retrieving tweets from server: received null for tweets");
+         //         //    }
+	        //     }
+	        // });
 	    }
     });
 });
