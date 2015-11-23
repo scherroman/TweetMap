@@ -51,7 +51,7 @@ solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) 
 					return b.count - a.count;
 				})//Closing bracket of compare function
 				//NOW THAT TERMS ARE SORTED BASED ON COUNT (descending order), WE MUST FORMAT STRING TO PERFORM SOLR QUERY
-				//This is an example of a final URL: http://localhost:8983/solr/articles/query?q=title:New%20York&q=Southern&defType=edismax&bq=Southern^5&debugQuery=true
+				//This is an example of a final URL: http://localhost:8983/solr/tweets/select?q=text%3A(news+OR+good+OR+bad)&wt=json&indent=true&defType=edismax&bq=bad%5E100&stopwords=true&lowercaseOperators=true
 				//where the exponent of bq denotes how much each term is boosted by (default of 1). To "negate" a term: (*:* -xxx)^999  you boost everything but the term
 				//Since each term must be added to the "queries" and to the "boost queries", 2 strings should be concatenated for final result
 				var q = null;
