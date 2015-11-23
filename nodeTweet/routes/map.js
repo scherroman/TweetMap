@@ -257,8 +257,8 @@ function dateFormatterSingle(tweet) {
 
     var date = d.toLocaleDateString(); // 11/23/2015
     date = date.substring(date.indexOf("/")+1, date.lastIndexOf("/")) + " "; // 23 
-    date = date + monthConvert(d.substring(0, d.indexOf("/"))) + " "; // 23 Nov 
-    date = date + date.substring(d.lastIndexOf("/")); // 23 Nov 2015
+    date = date + monthConvert(date.substring(0, date.indexOf("/"))) + " "; // 23 Nov 
+    date = date + date.substring(date.lastIndexOf("/")); // 23 Nov 2015
     var finalDate = time + " - " + date;
     tweet.timestamp_ms = finalDate;
 
