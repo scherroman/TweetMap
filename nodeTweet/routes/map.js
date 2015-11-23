@@ -141,10 +141,10 @@ router.post('/', function(req, res) {
         r.connect( {host: 'localhost', port: 28015}, function(err, conn) {
 
           if (err) throw err;
-
+          console.log("rTerms: " + rTerms);
           var jsonRelatedTerms = [];
           for(i = 0; i < rTerms.length; i++) {
-              var jsonTerm = {term:rterms[i], count:1}
+              var jsonTerm = {term:rTerms[i], count:1}
               jsonRelatedTerms.push(jsonTerm)
           }
           //We insert to DB
