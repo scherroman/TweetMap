@@ -35,20 +35,22 @@ router.get('/', function(req, res, next) {
 //This method handles search requests
 handleSearchRequest = function(req, res, next) {
 
-	var searchQuery = req.query.input;
+	console.log("Search Query: ", req.query);
+
+	var searchInput = req.query.input;
 	var searchType = req.query.type;
-	console.log("Search input: ", searchQuery);
+	console.log("Search input: ", searchInput);
 
 	if (searchType === TERM_SEARCH) {
-		console.log("Term search: ", searchQuery.term);
-		console.log("tweetStartingIndex: ", searchQuery.tweetStartingIndex);
-		console.log("numTweetsRequested: ", searchQuery.numTweetsRequested);
+		console.log("Term search: ", searchInput.term);
+		console.log("tweetStartingIndex: ", searchInput.tweetStartingIndex);
+		console.log("numTweetsRequested: ", searchInput.numTweetsRequested);
 
 	}
 	else if (searchType === THEME_SEARCH)  {
-		console.log("Theme search: ", searchQuery.theme);
-		console.log("tweetStartingIndex: ", searchQuery.tweetStartingIndex);
-		console.log("numTweetsRequested: ", searchQuery.numTweetsRequested);
+		console.log("Theme search: ", searchInput.theme);
+		console.log("tweetStartingIndex: ", searchInput.tweetStartingIndex);
+		console.log("numTweetsRequested: ", searchInput.numTweetsRequested);
 	}
 
 	tweetUser = 'Aaron';
@@ -80,7 +82,8 @@ handleSearchRequest = function(req, res, next) {
 												 "numTotalTweets": numTotalTweets, 
 												 "topRelatedTerms": topRelatedTerms,
 												 "tweets": tweets,
-												 "type": searchType
+												 "type": searchType,
+												 "searchInput": searchInput
 											 });
 }
 

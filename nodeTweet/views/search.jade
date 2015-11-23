@@ -28,7 +28,8 @@ block content
 			if (dataToRender)
 				div#searchResultsDiv
 					if (numTotalTweets > 0)
-						h4 #{numTotalTweets} results
+						h2 #{searchInput} 
+						h4 #{type} search - #{numTotalTweets} results
 						if (type == "theme")
 							h5 Related Terms: #{topRelatedTerms}
 						if (tweets.length > 0)
