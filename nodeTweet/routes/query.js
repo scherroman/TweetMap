@@ -91,7 +91,7 @@ solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) 
 
 							})//Closing bracket of DB access for tweet
 						}//Closing bracket of for-loop
-
+						dateFormatter(tweetsToShow);
 						//HERE tweetsToShow IS THE ARRAY OF TWEETS TO DISPLAY
 						res.setHeader('content-type', 'application/vnd.api+json');
 						res.end(JSON.stringify(response));
@@ -101,3 +101,50 @@ solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) 
 		})//Closing bracket of DB connection
 	}//Closing bracket of "if (!error && response.statusCode == 200)"
 }//Closing bracket of solrRequestClient
+
+function dateFormatter(tweetArray) {
+/*tweetArray will be filled with tweets in the following format: 
+{ "id": "4c6d3a58-7402-4b1a-9dd8-de7ee36a05f3" , 
+"place": "New York, USA" , 
+"text": "My boy Bieber just followed me on Twitter. Today is a good day https://t.co/2OfU6JMabX" , 
+"timestamp_ms": "1447105319795" , "user": "HAleYeAhh" }
+We want time to be in the following format: 8:33 PM - 22 Nov 2015
+*/
+	for(i = 0; i < tweetArray.length; i++) {
+		var d = new Date(parseInt(tweetArray[i].timestamp_ms));
+		var time = d.toLocaleTimeString(); // 12:29:41 AM
+		time = time.substring(0, time.lastIndexOf(':')) + " " + time.substring(time.length-2); // 12:29 PM
+
+		var date = d.toLocaleDateString(); // 11/23/2015
+		date = d.substring(d.indexOf("/")+1, d.lastIndexOf("/")) + " "; // 23 
+		date = date + monthConvert(d.substring(0, d.indexOf("/"))) + " "; // 23 Nov 
+		date = date + d.substring(d.lastIndexOf("/")); // 23 Nov 2015
+
+		var finalDate = time + " - " + date;
+		tweetArray[i].timestamp_ms = finalDate;
+}
+function monthConvert(m){
+	if(m === 1)
+		return "Jan";
+	else if (m === 2)
+		return "Feb";
+	else if (m === 3)
+		return "Mar";
+	else if (m === 4)
+		return "Apr";
+	else if (m === 5)
+		return "May";
+	else if (m === 6)
+		return "Jun";
+	else if (m === 7)
+		return "Jul";
+	else if (m === 8)
+		return "Aug";
+	else if (m === 9)
+		return "Sep";
+	else if (m === 10)
+		return "Oct";
+	else if (m === 11)
+		return "Nov";
+	else return "Dec";
+}
