@@ -236,33 +236,25 @@ function dateFormatter(tweetArray) {
 We want time to be in the following format: 8:33 PM - 22 Nov 2015
 */
   for(i = 0; i < tweetArray.length; i++) {
-    var d = new Date(parseInt(tweetArray[i].timestamp_ms));
-    var time = d.toLocaleTimeString(); // 12:29:41 AM
-    time = time.substring(0, time.lastIndexOf(':')) + " " + time.substring(time.length-2); // 12:29 PM
-
-    var date = d.toLocaleDateString(); // 11/23/2015
-    date = d.substring(d.indexOf("/")+1, d.lastIndexOf("/")) + " "; // 23 
-    date = date + monthConvert(d.substring(0, d.indexOf("/"))) + " "; // 23 Nov 
-    date = date + d.substring(d.lastIndexOf("/")); // 23 Nov 2015
-
-    var finalDate = time + " - " + date;
-    tweetArray[i].timestamp_ms = finalDate;
+    dateFormatterSingle(tweetArray[i]);
   }
-  return tweetArray;
 }
+
 function dateFormatterSingle(tweet) {
-    var d = new Date(parseInt(tweet.timestamp_ms));
-    var time = d.toLocaleTimeString(); // 12:29:41 AM
-    time = time.substring(0, time.lastIndexOf(':')) + " " + d.toLocaleTimeString().substring(d.toLocaleTimeString().length-2); // 12:29 PM
+  var d = new Date(parseInt(tweet.timestamp_ms));
+  var originalTime = d.toLocaleTimeString(); // 11:41:52 AM
 
-    var date = d.toLocaleDateString(); // 11/23/2015
-    date = date.substring(date.indexOf("/")+1, date.lastIndexOf("/")) + " " 
-    + monthConvert(date.substring(0, date.indexOf("/"))) + " " 
-    + date.substring(date.lastIndexOf("/")); // 23 Nov 2015
-    var finalDate = time + " - " + date;
-    tweet.timestamp_ms = finalDate;
+  var time = originalTime.substring(0, originalTime.lastIndexOf(':')); // 11:41
+  time += " " + originalTime.substring(originalTime.length-2); // 11:41 AM
 
-    return tweet;
+  var originalDate = d.toLocaleDateString(); // 11/24/2015
+  
+  var date = originalDate.substring(originalDate.indexOf('/') + 1, originalDate.lastIndexOf('/'));// 24
+  date += " " + monthConvert(originalDate.substring(0, originalDate.indexOf('/')));
+  date += " " + originalDate.substring(originalDate.lastIndexOf('/') + 1);
+
+  var finalDate = time + " - " + date;
+  tweet.timestamp_ms = finalDate;
 }
 function monthConvert(m){
   if(m === 1)
