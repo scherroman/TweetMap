@@ -15,6 +15,7 @@
     "serve-favicon": "~2.3.0",
     "rethinkdb": "~2.1.1",
     "request-json": "~0.5.3",
-    "keyword-extractor": "~0.0.12"
+    "keyword-extractor": "~0.0.12",
+    "moment-timezone": "~0.4.1"
   }
 }
