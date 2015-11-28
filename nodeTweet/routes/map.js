@@ -242,14 +242,16 @@ We want time to be in the following format: 8:33 PM - 22 Nov 2015
 
 function dateFormatterSingle(tweet) {
   var d = new Date(parseInt(tweet.timestamp_ms));
+  console.log("d: ", d)
   var originalTime = d.toLocaleTimeString(); // 11:41:52 AM
-
+  console.log("originalTime: " + originalTime);
   var time = originalTime.substring(0, originalTime.lastIndexOf(':')); // 11:41
   time += " " + originalTime.substring(originalTime.length-2); // 11:41 AM
 
   var originalDate = d.toLocaleDateString(); // 11/24/2015
   
   var date = originalDate.substring(originalDate.indexOf('/') + 1, originalDate.lastIndexOf('/'));// 24
+  console.log("date: " + date);
   date += " " + monthConvert(originalDate.substring(0, originalDate.indexOf('/')));
   date += " " + originalDate.substring(originalDate.lastIndexOf('/') + 1);
 
