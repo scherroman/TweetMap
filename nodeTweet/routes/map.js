@@ -5,7 +5,7 @@ var url = require('url');
 var request = require('request-json');
 var hosts = require('../hosts');
 var keyword_extractor = require("keyword-extractor");
-var moment = require('moment');
+var moment = require('moment-timezone');
 
 //Var to make requests to Solr
 var solrRequestClient = request.createClient('http://' + hosts.solrServer + ':8983/');
