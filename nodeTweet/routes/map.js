@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
   //localhost:8983/solr/tweets/query?q=*:*&sort=random_12939291%20desc
 
   var seed = Math.random()*10000000;
-
+  console.log("Seed: " + seed);
   var solrUrl = 'solr/tweets/query?q=*:*&sort=random_' + seed + "%20desc";
 
   //WE USE SOLR TO OBTAIN KEY OF RANDOM TWEET TO RETRIEVE FROM DB
@@ -26,7 +26,7 @@ router.get('/', function(req, res, next) {
     if (!error && response.statusCode == 200) {
 
       var uuid = body.response.docs[0].id;
-      console.log("UUID Solr response: " + response);
+      console.log("UUID Solr response: " + JSON.stringify(response));
       //We establish connection to DB
       r.connect( {host: 'localhost', port: 28015}, function(err, conn) {
 
@@ -38,7 +38,7 @@ router.get('/', function(req, res, next) {
 
           var tweetText = tweet.text;
 
-          console.log("tweet from Solr: " + tweet);
+          console.log("tweet from Solr: " + JSON.stringify(tweet));
 
           var filteredWords = keyword_extractor.extract(tweetText,{
                                                                 language:"english",
