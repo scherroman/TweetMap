@@ -16,6 +16,7 @@
     "rethinkdb": "~2.1.1",
     "request-json": "~0.5.3",
     "keyword-extractor": "~0.0.12",
+    "moment": "~2.10.6",
     "moment-timezone": "~0.4.1"
   }
 }
