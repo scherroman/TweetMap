@@ -243,51 +243,9 @@ We want time to be in the following format: 8:33 PM - 22 Nov 2015
 
 function dateFormatterSingle(tweet) {
   var d = new Date(parseInt(tweet.timestamp_ms));
-  // console.log("d: ", d)
-  // var originalTime = d.toLocaleTimeString(); // 11:41:52 AM
-  // console.log("originalTime: " + originalTime);
-  // var time = originalTime.substring(0, originalTime.lastIndexOf(':')); // 11:41
-  // time += " " + originalTime.substring(originalTime.length-2); // 11:41 AM
-
-  // var originalDate = d.toLocaleDateString(); // 11/24/2015
-  
-  // var date = originalDate.substring(originalDate.indexOf('/') + 1, originalDate.lastIndexOf('/'));// 24
-  // console.log("date: " + date);
-  // date += " " + monthConvert(originalDate.substring(0, originalDate.indexOf('/')));
-  // date += " " + originalDate.substring(originalDate.lastIndexOf('/') + 1);
-
-  // var finalDate = time + " - " + date;
-  // tweet.timestamp_ms = finalDate;
-
+ 
   var myEDTString = moment(d.toUTCString()).tz('America/New_York').format("h:m A - D MMM YYYY")
-  console.log("Moment: " + myEDTString);
-  
-  tweet.timestamp_ms = myEDTString;
 
-}
-function monthConvert(m){
-  if(m === 1)
-    return "Jan";
-  else if (m === 2)
-    return "Feb";
-  else if (m === 3)
-    return "Mar";
-  else if (m === 4)
-    return "Apr";
-  else if (m === 5)
-    return "May";
-  else if (m === 6)
-    return "Jun";
-  else if (m === 7)
-    return "Jul";
-  else if (m === 8)
-    return "Aug";
-  else if (m === 9)
-    return "Sep";
-  else if (m === 10)
-    return "Oct";
-  else if (m === 11)
-    return "Nov";
-  else return "Dec";
+  tweet.timestamp_ms = myEDTString;
 }
 module.exports = router;
