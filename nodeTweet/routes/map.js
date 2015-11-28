@@ -260,6 +260,8 @@ function dateFormatterSingle(tweet) {
   // tweet.timestamp_ms = finalDate;
 
   var myEDTString = moment(d.toUTCString()).tz('America/New_York').format("h:m A - D MMM YYYY")
+  console.log("Moment: " + myEDTString);
+  
   tweet.timestamp_ms = myEDTString;
 
 }
