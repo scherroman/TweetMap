@@ -129,21 +129,8 @@ handleSearchRequest = function(req, res, next) {
 								var tweetsToObtain = body.response.docs;
 								
 								//String to render
-								var tweetsToShow = [];
-
-								for(i = 0; i < tweetsToObtain.length; i++) {
-
-									var currentUUID = tweetsToObtain[i].id;
-									
-									//HERE WE OBTAIN EACH OF THE TWEETS TO FORMAT INTO ARRAY
-									r.db('NodeTweet').table('tweets').get(currentUUID).run(conn, function(err, tweet) {
-										if (err) throw err;
-										console.log("Tweets from DB: " + JSON.stringify(tweet));
-										
-										tweetsToShow[i] = tweet;
-
-									})//Closing bracket of DB access for tweet
-								}//Closing bracket of for-loop
+								var tweetsToShow = addTweetsToArray(tweetsToObtain);
+								
 								console.log("tweetsToShow: " + JSON.stringify(tweetsToShow));
 								dateFormatter(tweetsToShow);
 								var nextTweetsAvailable = true;
@@ -217,6 +204,25 @@ We want time to be in the following format: 8:33 PM - 22 Nov 2015
   for(i = 0; i < tweetArray.length; i++) {
     dateFormatterSingle(tweetArray[i]);
   }
+}
+
+function addTweetsToArray(tweet, tweetsToShow) {
+
+	var tweetsToShow = [];
+
+	for(i = 0; i < tweetsToObtain.length; i++) {
+
+		var currentUUID = tweetsToObtain[i].id;
+		
+		//HERE WE OBTAIN EACH OF THE TWEETS TO FORMAT INTO ARRAY
+		r.db('NodeTweet').table('tweets').get(currentUUID).run(conn, function(err, tweet) {
+			if (err) throw err;
+			console.log("Tweets from DB: " + JSON.stringify(tweet));
+			
+			tweetsToShow.push(tweet);
+
+		})//Closing bracket of DB access for tweet
+	}//Closing bracket of for-loop
 }
 
 function dateFormatterSingle(tweet) {
