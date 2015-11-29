@@ -139,7 +139,7 @@ handleSearchRequest = function(req, res, next) {
 										tweetsToShow.push(tweet);
 
 									});
-								});//, function(err) {
+								}, function(err) {
 
 									// for(i = 0; i < tweetsToObtain.length; i++) {
 
@@ -169,8 +169,8 @@ handleSearchRequest = function(req, res, next) {
 													 "nextTweetsAvailable": nextTweetsAvailable,
 													 "type": searchType,
 													 "searchInput": searchInput
-									 });
-								// });
+									});
+								});
 							}//Closing bracket of "if (!error && response.statusCode == 200)"
 						})//Closing bracket for Solr query for tweets with related terms
 					})//Closing bracket of DB access for related terms
