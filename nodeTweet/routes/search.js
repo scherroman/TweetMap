@@ -132,14 +132,14 @@ handleSearchRequest = function(req, res, next) {
 								//String to render
 								var tweetsToShow = [];
 
-								async.each(tweetsToObtain, function(currentRelatedTerm){
+								async.each(tweetsToObtain, function(currentRelatedTerm) {
 									r.db('NodeTweet').table('tweets').get(currentRelatedTerm.id).run(conn, function(err, tweet) {
 										if (err) throw err;
-										
+										console.log("Current tweet from DB: ", JSON.stringify(tweet))
 										tweetsToShow.push(tweet);
 
-									})
-								}, function(err) {
+									});
+								});//, function(err) {
 
 									// for(i = 0; i < tweetsToObtain.length; i++) {
 
@@ -169,8 +169,8 @@ handleSearchRequest = function(req, res, next) {
 													 "nextTweetsAvailable": nextTweetsAvailable,
 													 "type": searchType,
 													 "searchInput": searchInput
-									});
-								});
+									 });
+								// });
 							}//Closing bracket of "if (!error && response.statusCode == 200)"
 						})//Closing bracket for Solr query for tweets with related terms
 					})//Closing bracket of DB access for related terms
