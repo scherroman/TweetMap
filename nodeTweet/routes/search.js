@@ -4,7 +4,7 @@ var r = require('rethinkdb');
 var url = require('url');
 var request = require('request-json');
 var hosts = require('../hosts');
-var async require('async');
+var async = require('async');
 
 var TERM_SEARCH = 'term';
 var THEME_SEARCH = 'theme';
