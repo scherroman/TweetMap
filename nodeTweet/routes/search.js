@@ -160,7 +160,7 @@ handleSearchRequest = function(req, res, next) {
 					})//Closing bracket of DB access for related terms
 				})//Closing bracket of DB connection
 			}//Closing bracket of "if (!error && response.statusCode == 200)"
-		}//Closing bracket of solrRequestClient
+		})//Closing bracket of Solr GET request to obtain uuid of theme
 	}//Closing bracket for "else if (searchType === THEME_SEARCH)  {"
 
 	// tweetUser = 'Aaron';
