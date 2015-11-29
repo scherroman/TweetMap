@@ -110,12 +110,12 @@ handleSearchRequest = function(req, res, next) {
 						var bq = "defType=edismax&bq=";
 						for(i = 0; i < sortedRelatedTerms.length; i++) {
 							if(i != sortedRelatedTerms.length-1) {
-								bq = bq + sortedRelatedTerms[i].term + "%5" + sortedRelatedTerms[i].count + "+AND+";
-								q = q + sortedRelatedTerms[i].term + "+OR+";
+								bq += sortedRelatedTerms[i].term + "%5" + sortedRelatedTerms[i].count + "+AND+";
+								q += sortedRelatedTerms[i].term + "+OR+";
 							}
 							else {
-								bq = sortedRelatedTerms[i].term + "%5" + sortedRelatedTerms[i].count;
-								q = q + sortedRelatedTerms[i].term + ")&";
+								bq += sortedRelatedTerms[i].term + "%5" + sortedRelatedTerms[i].count;
+								q += sortedRelatedTerms[i].term + ")&";
 							}
 						}//Closing bracket of for-loop
 						//q and bg are formatted, so now we have to format into URL for query
