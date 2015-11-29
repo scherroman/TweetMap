@@ -60,8 +60,6 @@ handleSearchRequest = function(req, res, next) {
 		console.log("tweetStartingIndex: ", searchInput.tweetStartingIndex);
 		console.log("numTweetsRequested: ", searchInput.numTweetsRequested);
 
-		var solrRequestClient = request.createClient('http://' + hosts.solrServer + ':8983/');
-
 		//String manipulation for Solr query where term:searchTerm
 		var solrUrl = 'solr/terms/query?q=' + searchInput;
 
@@ -133,6 +131,7 @@ handleSearchRequest = function(req, res, next) {
 								//String to render
 								var tweetsToShow = [];
 
+								//async IS USED TO USE A CALLBACK DURING ITERATION TO ASSIGN VALUES TO tweetsToShow
 								async.each(tweetsToObtain, function(currentSearchResult, callback) {
 									r.db('NodeTweet').table('tweets').get(currentSearchResult.id).run(conn, function(err, tweet) {
 										if (err) throw err;
@@ -144,15 +143,15 @@ handleSearchRequest = function(req, res, next) {
 								}, function(err) {
 
 									var topRelatedTerms = [];
-
+									//for-loop to format topRelatedTerms into array of Strings, not JSON
 									for(i = 0; i < sortedRelatedTerms.length; i++) {// && i < 10; i++) {
 										topRelatedTerms.push(sortedRelatedTerms[i].term);
 									}
-
+									//format dates using moment
 									dateFormatter(tweetsToShow);
+									//enable/disable pagination accordingly
 									var nextTweetsAvailable = (body.response.numFound > NUM_TWEETS_TO_RETURN);
 	 								var prevTweetsAvailable = (tweetStartingIndex > 0);
-	 								console.log("tweetsToShow amount: " + tweetsToShow.length);
 
 									//HERE tweetsToShow IS THE ARRAY OF TWEETS TO DISPLAY
 									res.render('search', { "title": 'Search for Tweets', 
@@ -173,43 +172,6 @@ handleSearchRequest = function(req, res, next) {
 			}//Closing bracket of "if (!error && response.statusCode == 200)"
 		})//Closing bracket of Solr GET request to obtain uuid of theme
 	}//Closing bracket for "else if (searchType === THEME_SEARCH)  {"
-
-	// tweetUser = 'Aaron';
-	// tweetText =  "In other news, my edges are laid, my skin is poppin and I'm educated...shout out to my parents for these genes🙌🏽😂";
-	// tweetPlace = 'NYC, New York';
-	// tweetTime = '8:33 PM - 22 Nov 2015';
-
-	// var numTotalTweets = 1000 //Test value
- //  var nextTweetsAvailable = true;
- //  var prevTweetsAvailable = true;
-	// topRelatedTerms = ['lion', 'cup', 'fool', 'andy', 'huh', 'what', 'gum'];
-	// topRelatedTerms = topRelatedTerms.join(", ");
-
-
-	// var tweet = {
-	// 	user: tweetUser,
-	// 	text: tweetText,
-	// 	place: tweetPlace,
-	// 	time: tweetTime
-	// }
-
-	// var tweets = [];
-
-	// var numTweets = NUM_TWEETS_TO_RETURN; //test value
-	// for (var i = 0; i < numTweets; i++) {
-	// 	tweets[i] = tweet;
-	// }
-
-	// res.render('search', { "title": 'Search for Tweets', 
-	// 											 "searchResultsToRender": true,
-	// 											 "numTotalTweets": numTotalTweets, 
-	// 											 "topRelatedTerms": topRelatedTerms,
-	// 											 "tweets": tweets,
-	// 											 "prevTweetsAvaialable": prevTweetsAvailable,
-	// 											 "nextTweetsAvailable": nextTweetsAvailable,
-	// 											 "type": searchType,
-	// 											 "searchInput": searchInput
-	// 										 });
 }
 function dateFormatter(tweetArray) {
 /*tweetArray will be filled with tweets in the following format: 
