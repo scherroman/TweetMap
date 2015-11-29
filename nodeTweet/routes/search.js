@@ -4,6 +4,7 @@ var r = require('rethinkdb');
 var url = require('url');
 var request = require('request-json');
 var hosts = require('../hosts');
+var async require('async');
 
 var TERM_SEARCH = 'term';
 var THEME_SEARCH = 'theme';
@@ -129,24 +130,46 @@ handleSearchRequest = function(req, res, next) {
 								var tweetsToObtain = body.response.docs;
 								
 								//String to render
-								var tweetsToShow = addTweetsToArray(tweetsToObtain, conn);
+								var tweetsToShow = [];
 
-								console.log("tweetsToShow: " + JSON.stringify(tweetsToShow));
-								dateFormatter(tweetsToShow);
-								var nextTweetsAvailable = true;
- 								var prevTweetsAvaialable = true;
- 								console.log("tweetsToShow: " + JSON.stringify(tweetsToShow));
- 								console.log("sortedRelatedTerms: " + JSON.stringify(sortedRelatedTerms));
-								//HERE tweetsToShow IS THE ARRAY OF TWEETS TO DISPLAY
-								res.render('search', { "title": 'Search for Tweets', 
-												 "searchResultsToRender": true,
-												 "numTotalTweets": body.response.numFound, 
-												 "topRelatedTerms": sortedRelatedTerms,
-												 "tweets": tweetsToShow,
-												 "prevTweetsAvaialable": prevTweetsAvaialable,
-												 "nextTweetsAvailable": nextTweetsAvailable,
-												 "type": searchType,
-												 "searchInput": searchInput
+								async.each(tweetsToObtain, function(currentUUID){
+									r.db('NodeTweet').table('tweets').get(currentUUID).run(conn, function(err, tweet) {
+										if (err) throw err;
+										
+										tweetsToShow.push(tweet);
+
+									})
+								}, function(err) {
+
+									// for(i = 0; i < tweetsToObtain.length; i++) {
+
+									// 	var currentUUID = tweetsToObtain[i].id;
+										
+									// 	//HERE WE OBTAIN EACH OF THE TWEETS TO FORMAT INTO ARRAY
+									// 	r.db('NodeTweet').table('tweets').get(currentUUID).run(conn, function(err, tweet) {
+									// 		if (err) throw err;
+											
+									// 		tweetsToShow.push(tweet);
+
+									// 	})//Closing bracket of DB access for tweet
+									// }//Closing bracket of for-loop
+									console.log("tweetsToShow: " + JSON.stringify(tweetsToShow));
+									dateFormatter(tweetsToShow);
+									var nextTweetsAvailable = true;
+	 								var prevTweetsAvaialable = true;
+	 								console.log("tweetsToShow: " + JSON.stringify(tweetsToShow));
+	 								console.log("sortedRelatedTerms: " + JSON.stringify(sortedRelatedTerms));
+									//HERE tweetsToShow IS THE ARRAY OF TWEETS TO DISPLAY
+									res.render('search', { "title": 'Search for Tweets', 
+													 "searchResultsToRender": true,
+													 "numTotalTweets": body.response.numFound, 
+													 "topRelatedTerms": sortedRelatedTerms,
+													 "tweets": tweetsToShow,
+													 "prevTweetsAvaialable": prevTweetsAvaialable,
+													 "nextTweetsAvailable": nextTweetsAvailable,
+													 "type": searchType,
+													 "searchInput": searchInput
+									});
 								});
 							}//Closing bracket of "if (!error && response.statusCode == 200)"
 						})//Closing bracket for Solr query for tweets with related terms
@@ -204,26 +227,6 @@ We want time to be in the following format: 8:33 PM - 22 Nov 2015
   for(i = 0; i < tweetArray.length; i++) {
     dateFormatterSingle(tweetArray[i]);
   }
-}
-
-function addTweetsToArray(tweetsToObtain, conn) {
-
-	var tweetsToShow = [];
-
-	for(i = 0; i < tweetsToObtain.length; i++) {
-
-		var currentUUID = tweetsToObtain[i].id;
-		
-		//HERE WE OBTAIN EACH OF THE TWEETS TO FORMAT INTO ARRAY
-		r.db('NodeTweet').table('tweets').get(currentUUID).run(conn, function(err, tweet) {
-			if (err) throw err;
-			console.log("Tweets from DB: " + JSON.stringify(tweet));
-			
-			tweetsToShow.push(tweet);
-
-		})//Closing bracket of DB access for tweet
-	}//Closing bracket of for-loop
-	return tweetsToShow;
 }
 
 function dateFormatterSingle(tweet) {
