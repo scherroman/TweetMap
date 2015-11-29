@@ -137,6 +137,7 @@ handleSearchRequest = function(req, res, next) {
 										if (err) throw err;
 										console.log("Current tweet from DB: ", JSON.stringify(tweet))
 										tweetsToShow.push(tweet);
+										return;
 
 									});
 								}, function(err) {
