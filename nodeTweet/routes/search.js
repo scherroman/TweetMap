@@ -138,9 +138,9 @@ handleSearchRequest = function(req, res, next) {
 									//HERE WE OBTAIN EACH OF THE TWEETS TO FORMAT INTO ARRAY
 									r.db('NodeTweet').table('tweets').get(currentUUID).run(conn, function(err, tweet) {
 										if (err) throw err;
-										console.log("Tweets from DB: " + tweet);
+										console.log("Tweets from DB: " + JSON.stringify(tweet));
 										
-										tweetsToShow.push(tweet);
+										tweetsToShow[i] = tweet;
 
 									})//Closing bracket of DB access for tweet
 								}//Closing bracket of for-loop
