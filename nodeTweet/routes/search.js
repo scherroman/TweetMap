@@ -144,6 +144,8 @@ handleSearchRequest = function(req, res, next) {
 									})//Closing bracket of DB access for tweet
 								}//Closing bracket of for-loop
 								dateFormatter(tweetsToShow);
+								var nextTweetsAvailable = true;
+ 								var prevTweetsAvaialable = true;
 								//HERE tweetsToShow IS THE ARRAY OF TWEETS TO DISPLAY
 								res.render('search', { "title": 'Search for Tweets', 
 												 "searchResultsToRender": true,
