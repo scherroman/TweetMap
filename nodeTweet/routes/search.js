@@ -110,11 +110,11 @@ handleSearchRequest = function(req, res, next) {
 						var bq = "defType=edismax&bq=";
 						for(i = 0; i < sortedRelatedTerms.length; i++) {
 							if(i != sortedRelatedTerms.length-1) {
-								bq += sortedRelatedTerms[i].term + "%5" + sortedRelatedTerms[i].count + "+AND+";
+								bq += sortedRelatedTerms[i].term + "^" + sortedRelatedTerms[i].count + "+AND+";
 								q += sortedRelatedTerms[i].term + "+OR+";
 							}
 							else {
-								bq += sortedRelatedTerms[i].term + "%5" + sortedRelatedTerms[i].count;
+								bq += sortedRelatedTerms[i].term + "^" + sortedRelatedTerms[i].count;
 								q += sortedRelatedTerms[i].term + ")&";
 							}
 						}//Closing bracket of for-loop
@@ -138,12 +138,13 @@ handleSearchRequest = function(req, res, next) {
 									//HERE WE OBTAIN EACH OF THE TWEETS TO FORMAT INTO ARRAY
 									r.db('NodeTweet').table('tweets').get(currentUUID).run(conn, function(err, tweet) {
 										if (err) throw err;
+										console.log("Tweets from DB: " + tweet);
 										
 										tweetsToShow.push(tweet);
 
 									})//Closing bracket of DB access for tweet
 								}//Closing bracket of for-loop
-								console.log("tweetsToShow: " + tweetsToShow);
+								console.log("tweetsToShow: " + JSON.stringify(tweetsToShow));
 								dateFormatter(tweetsToShow);
 								var nextTweetsAvailable = true;
  								var prevTweetsAvaialable = true;
