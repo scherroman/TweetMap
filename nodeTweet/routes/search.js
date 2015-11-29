@@ -121,7 +121,7 @@ handleSearchRequest = function(req, res, next) {
 							}
 						}//Closing bracket of for-loop
 						//q and bg are formatted, so now we have to format into URL for query
-						var relatedTermsSolrUrl = 'solr/tweets/query?q=text%3A' + q + bq;
+						var relatedTermsSolrUrl = 'solr/tweets/query?q=text%3A' + q + bq + "&rows=" + NUM_TWEETS_TO_RETURN;
 						console.log("relatedTermsSolrUrl: " + relatedTermsSolrUrl);
 						//NOW WE MUST PERFORM SOLR QUERY FOR UUIDs OF TWEETS
 						solrRequestClient.get(relatedTermsSolrUrl, function solrRequestQuery(error, response, body) {
@@ -133,8 +133,8 @@ handleSearchRequest = function(req, res, next) {
 								//String to render
 								var tweetsToShow = [];
 
-								async.each(tweetsToObtain, function(currentRelatedTerm, callback) {
-									r.db('NodeTweet').table('tweets').get(currentRelatedTerm.id).run(conn, function(err, tweet) {
+								async.each(tweetsToObtain, function(currentSearchResult, callback) {
+									r.db('NodeTweet').table('tweets').get(currentSearchResult.id).run(conn, function(err, tweet) {
 										if (err) throw err;
 
 										tweetsToShow.push(tweet);
@@ -152,8 +152,8 @@ handleSearchRequest = function(req, res, next) {
 									dateFormatter(tweetsToShow);
 									var nextTweetsAvailable = true;
 	 								var prevTweetsAvaialable = true;
-	 								console.log("tweetsToShow: " + JSON.stringify(tweetsToShow));
-	 								console.log("sortedRelatedTerms: " + JSON.stringify(sortedRelatedTerms));
+	 								console.log("tweetsToShow amount: " + tweetsToShow.length);
+
 									//HERE tweetsToShow IS THE ARRAY OF TWEETS TO DISPLAY
 									res.render('search', { "title": 'Search for Tweets', 
 													 "searchResultsToRender": true,
@@ -164,8 +164,8 @@ handleSearchRequest = function(req, res, next) {
 													 "nextTweetsAvailable": nextTweetsAvailable,
 													 "type": searchType,
 													 "searchInput": searchInput
-									});
-								});//closing bracket of async call
+									});//Closing bracket of callback to call when iterator of async is done
+								});//Closing bracket of async call
 							}//Closing bracket of "if (!error && response.statusCode == 200)"
 						})//Closing bracket for Solr query for tweets with related terms
 					})//Closing bracket of DB access for related terms
