@@ -58,7 +58,7 @@ handleSearchRequest = function(req, res, next) {
 		console.log("Theme search: ", searchInput.theme);
 		console.log("tweetStartingIndex: ", searchInput.tweetStartingIndex);
 		console.log("numTweetsRequested: ", searchInput.numTweetsRequested);
-		console.log("req.query: " + req.query);
+		console.log("req.query: " + JSON.stringify(req.query));
 
 		var solrRequestClient = request.createClient('http://' + hosts.solrServer + ':8983/');
 
