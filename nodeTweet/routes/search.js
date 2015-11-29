@@ -136,26 +136,19 @@ handleSearchRequest = function(req, res, next) {
 								async.each(tweetsToObtain, function(currentRelatedTerm, callback) {
 									r.db('NodeTweet').table('tweets').get(currentRelatedTerm.id).run(conn, function(err, tweet) {
 										if (err) throw err;
-										console.log("Current tweet from DB: ", JSON.stringify(tweet))
+
 										tweetsToShow.push(tweet);
 										return callback(null);
 
 									});
 								}, function(err) {
 
-									// for(i = 0; i < tweetsToObtain.length; i++) {
+									var topRelatedTerms = [];
 
-									// 	var currentUUID = tweetsToObtain[i].id;
-										
-									// 	//HERE WE OBTAIN EACH OF THE TWEETS TO FORMAT INTO ARRAY
-									// 	r.db('NodeTweet').table('tweets').get(currentUUID).run(conn, function(err, tweet) {
-									// 		if (err) throw err;
-											
-									// 		tweetsToShow.push(tweet);
+									for(i = 0; i < sortedRelatedTerms) {// && i < 10) {
+										topRelatedTerms.push(sortedRelatedTerms[i]);
+									}
 
-									// 	})//Closing bracket of DB access for tweet
-									// }//Closing bracket of for-loop
-									console.log("tweetsToShow: " + JSON.stringify(tweetsToShow));
 									dateFormatter(tweetsToShow);
 									var nextTweetsAvailable = true;
 	 								var prevTweetsAvaialable = true;
@@ -165,14 +158,14 @@ handleSearchRequest = function(req, res, next) {
 									res.render('search', { "title": 'Search for Tweets', 
 													 "searchResultsToRender": true,
 													 "numTotalTweets": body.response.numFound, 
-													 "topRelatedTerms": sortedRelatedTerms,
+													 "topRelatedTerms": topRelatedTerms,
 													 "tweets": tweetsToShow,
 													 "prevTweetsAvaialable": prevTweetsAvaialable,
 													 "nextTweetsAvailable": nextTweetsAvailable,
 													 "type": searchType,
 													 "searchInput": searchInput
 									});
-								});
+								});//closing bracket of async call
 							}//Closing bracket of "if (!error && response.statusCode == 200)"
 						})//Closing bracket for Solr query for tweets with related terms
 					})//Closing bracket of DB access for related terms
