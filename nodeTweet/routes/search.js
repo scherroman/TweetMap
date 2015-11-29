@@ -130,7 +130,7 @@ handleSearchRequest = function(req, res, next) {
 								
 								//String to render
 								var tweetsToShow = addTweetsToArray(tweetsToObtain);
-								
+
 								console.log("tweetsToShow: " + JSON.stringify(tweetsToShow));
 								dateFormatter(tweetsToShow);
 								var nextTweetsAvailable = true;
@@ -206,7 +206,7 @@ We want time to be in the following format: 8:33 PM - 22 Nov 2015
   }
 }
 
-function addTweetsToArray(tweet, tweetsToShow) {
+function addTweetsToArray(tweetsToObtain) {
 
 	var tweetsToShow = [];
 
@@ -223,6 +223,7 @@ function addTweetsToArray(tweet, tweetsToShow) {
 
 		})//Closing bracket of DB access for tweet
 	}//Closing bracket of for-loop
+	return tweetsToShow;
 }
 
 function dateFormatterSingle(tweet) {
