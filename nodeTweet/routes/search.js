@@ -32,10 +32,11 @@ router.get('/', function(req, res, next) {
 //This method handles search requests
 handleSearchRequest = function(req, res, next) {
 
-	console.log("Search Query: ", req.query);
+	console.log("Search Query: ", req.query); //e.g. {"input":"sports","type":"theme","count":"0"}
 
 	var searchInput = req.query.input;
 	var searchType = req.query.type;
+	var tweetStartingIndex = req.query.count;
 	console.log("Search input: ", searchInput);
 
 	if (searchType === TERM_SEARCH) {
@@ -58,7 +59,6 @@ handleSearchRequest = function(req, res, next) {
 		console.log("Theme search: ", searchInput.theme);
 		console.log("tweetStartingIndex: ", searchInput.tweetStartingIndex);
 		console.log("numTweetsRequested: ", searchInput.numTweetsRequested);
-		console.log("req.query: " + JSON.stringify(req.query));
 
 		var solrRequestClient = request.createClient('http://' + hosts.solrServer + ':8983/');
 
@@ -121,7 +121,7 @@ handleSearchRequest = function(req, res, next) {
 							}
 						}//Closing bracket of for-loop
 						//q and bg are formatted, so now we have to format into URL for query
-						var relatedTermsSolrUrl = 'solr/tweets/query?q=text%3A' + q + bq + "&rows=" + NUM_TWEETS_TO_RETURN;
+						var relatedTermsSolrUrl = 'solr/tweets/query?q=text%3A' + q + bq + "&rows=" + NUM_TWEETS_TO_RETURN + "&start=" + tweetStartingIndex;
 						console.log("relatedTermsSolrUrl: " + relatedTermsSolrUrl);
 						//NOW WE MUST PERFORM SOLR QUERY FOR UUIDs OF TWEETS
 						solrRequestClient.get(relatedTermsSolrUrl, function solrRequestQuery(error, response, body) {
@@ -150,8 +150,8 @@ handleSearchRequest = function(req, res, next) {
 									}
 
 									dateFormatter(tweetsToShow);
-									var nextTweetsAvailable = true;
-	 								var prevTweetsAvaialable = true;
+									var nextTweetsAvailable = (body.response.numFound > NUM_TWEETS_TO_RETURN);
+	 								var prevTweetsAvailable = (tweetStartingIndex > 0);
 	 								console.log("tweetsToShow amount: " + tweetsToShow.length);
 
 									//HERE tweetsToShow IS THE ARRAY OF TWEETS TO DISPLAY
@@ -160,7 +160,7 @@ handleSearchRequest = function(req, res, next) {
 													 "numTotalTweets": body.response.numFound, 
 													 "topRelatedTerms": topRelatedTerms,
 													 "tweets": tweetsToShow,
-													 "prevTweetsAvaialable": prevTweetsAvaialable,
+													 "prevTweetsAvaialable": prevTweetsAvailable,
 													 "nextTweetsAvailable": nextTweetsAvailable,
 													 "type": searchType,
 													 "searchInput": searchInput
@@ -181,7 +181,7 @@ handleSearchRequest = function(req, res, next) {
 
 	// var numTotalTweets = 1000 //Test value
  //  var nextTweetsAvailable = true;
- //  var prevTweetsAvaialable = true;
+ //  var prevTweetsAvailable = true;
 	// topRelatedTerms = ['lion', 'cup', 'fool', 'andy', 'huh', 'what', 'gum'];
 	// topRelatedTerms = topRelatedTerms.join(", ");
 
@@ -205,7 +205,7 @@ handleSearchRequest = function(req, res, next) {
 	// 											 "numTotalTweets": numTotalTweets, 
 	// 											 "topRelatedTerms": topRelatedTerms,
 	// 											 "tweets": tweets,
-	// 											 "prevTweetsAvaialable": prevTweetsAvaialable,
+	// 											 "prevTweetsAvaialable": prevTweetsAvailable,
 	// 											 "nextTweetsAvailable": nextTweetsAvailable,
 	// 											 "type": searchType,
 	// 											 "searchInput": searchInput
