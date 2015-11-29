@@ -145,7 +145,7 @@ handleSearchRequest = function(req, res, next) {
 
 									var topRelatedTerms = [];
 
-									for(i = 0; i < sortedRelatedTerms) {// && i < 10) {
+									for(i = 0; i < sortedRelatedTerms.length; i++) {// && i < 10; i++) {
 										topRelatedTerms.push(sortedRelatedTerms[i]);
 									}
 
