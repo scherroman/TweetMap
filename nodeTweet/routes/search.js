@@ -132,8 +132,8 @@ handleSearchRequest = function(req, res, next) {
 								//String to render
 								var tweetsToShow = [];
 
-								async.each(tweetsToObtain, function(currentUUID){
-									r.db('NodeTweet').table('tweets').get(currentUUID).run(conn, function(err, tweet) {
+								async.each(tweetsToObtain, function(currentRelatedTerm){
+									r.db('NodeTweet').table('tweets').get(currentRelatedTerm.id).run(conn, function(err, tweet) {
 										if (err) throw err;
 										
 										tweetsToShow.push(tweet);
