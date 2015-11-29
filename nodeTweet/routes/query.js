@@ -9,7 +9,7 @@ var searchTerm = null;
 var solrRequestClient = request.createClient('http://' + hosts.solrServer + ':8983/');
 
 //String manipulation for Solr query where term:searchTerm
-var solrUrl = 'solr/terms/query?q=' + searchRequest + '&rows=10'
+var solrUrl = 'solr/terms/query?q=' + searchRequest;
 
 //Solr GET request
 solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) {
