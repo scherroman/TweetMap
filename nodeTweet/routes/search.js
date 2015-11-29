@@ -146,7 +146,7 @@ handleSearchRequest = function(req, res, next) {
 									var topRelatedTerms = [];
 
 									for(i = 0; i < sortedRelatedTerms.length; i++) {// && i < 10; i++) {
-										topRelatedTerms.push(sortedRelatedTerms[i]);
+										topRelatedTerms.push(sortedRelatedTerms[i].term);
 									}
 
 									dateFormatter(tweetsToShow);

@@ -39,15 +39,15 @@ block content
 											div.tweet.panel.panel-default
 												div.tweetContent.panel-body
 													div.tweetUserDiv
-														p.tweetUser= '@' + tweetUser
+														p.tweetUser= '@' + tweet.user
 													div.tweetTextDiv
-														p.tweetText= tweetText
+														p.tweetText= tweet.text
 													hr
 													div.tweetFooter.row
 														div.tweetPlaceDiv.col-sm-6
-															p.tweetPlace= tweetPlace
+															p.tweetPlace= tweet.place
 														div.tweetTimeDiv.col-sm-6
-															p.tweetTime= tweetTime
+															p.tweetTime= tweet.timestamp_ms
 							if (prevTweetsAvaialable || nextTweetsAvailable)
 								div.paginationButtonsDiv.row
 									if (prevTweetsAvaialable)
