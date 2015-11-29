@@ -120,7 +120,7 @@ handleSearchRequest = function(req, res, next) {
 						}//Closing bracket of for-loop
 						//q and bg are formatted, so now we have to format into URL for query
 						var relatedTermsSolrUrl = 'solr/tweets/query?q=text%3A' + q + bq;
-
+						console.log("relatedTermsSolrUrl: " + relatedTermsSolrUrl);
 						//NOW WE MUST PERFORM SOLR QUERY FOR UUIDs OF TWEETS
 						solrRequestClient.get(relatedTermsSolrUrl, function solrRequestQuery(error, response, body) {
 							if (!error && response.statusCode == 200) {
@@ -143,6 +143,7 @@ handleSearchRequest = function(req, res, next) {
 
 									})//Closing bracket of DB access for tweet
 								}//Closing bracket of for-loop
+								console.log("tweetsToShow: " + tweetsToShow);
 								dateFormatter(tweetsToShow);
 								var nextTweetsAvailable = true;
  								var prevTweetsAvaialable = true;
