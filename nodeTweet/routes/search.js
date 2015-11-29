@@ -146,6 +146,8 @@ handleSearchRequest = function(req, res, next) {
 								dateFormatter(tweetsToShow);
 								var nextTweetsAvailable = true;
  								var prevTweetsAvaialable = true;
+ 								console.log("tweetsToShow: " + JSON.stringify(tweetsToShow));
+ 								console.log("sortedRelatedTerms: " + JSON.stringify(sortedRelatedTerms));
 								//HERE tweetsToShow IS THE ARRAY OF TWEETS TO DISPLAY
 								res.render('search', { "title": 'Search for Tweets', 
 												 "searchResultsToRender": true,
