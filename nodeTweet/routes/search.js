@@ -45,15 +45,51 @@ handleSearchRequest = function(req, res, next) {
 		console.log("numTweetsRequested: ", searchInput.numTweetsRequested);
 
 
+		var sorlUrl = "solr/tweets/query?q=" + searchInput + "&rows=" + NUM_TWEETS_TO_RETURN + "&start=" + tweetStartingIndex;
 
+		//Solr GET request
+		solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) {
 
+			if (!error && response.statusCode == 200) {
+				//array of objects with UUIDs
+				var tweetsToObtain = body.response.docs;
+				
+				//String to render
+				var tweetsToShow = [];
 
+				//async IS USED TO USE A CALLBACK DURING ITERATION TO ASSIGN VALUES TO tweetsToShow
+				async.each(tweetsToObtain, function(currentSearchResult, callback) {
+					r.db('NodeTweet').table('tweets').get(currentSearchResult.id).run(conn, function(err, tweet) {
+						if (err) throw err;
 
+						tweetsToShow.push(tweet);
+						return callback(null);
 
+					});
+				}, function(err) {
 
+					var topRelatedTerms = [];
 
+					//format dates using moment
+					dateFormatter(tweetsToShow);
+					//enable/disable pagination accordingly
+					var nextTweetsAvailable = (body.response.numFound > NUM_TWEETS_TO_RETURN);
+						var prevTweetsAvailable = (tweetStartingIndex > 0);
 
-
+					//HERE tweetsToShow IS THE ARRAY OF TWEETS TO DISPLAY
+					res.render('search', { "title": 'Search for Tweets', 
+									 "searchResultsToRender": true,
+									 "numTotalTweets": body.response.numFound, 
+									 "topRelatedTerms": topRelatedTerms,
+									 "tweets": tweetsToShow,
+									 "prevTweetsAvaialable": prevTweetsAvailable,
+									 "nextTweetsAvailable": nextTweetsAvailable,
+									 "type": searchType,
+									 "searchInput": searchInput
+					});//Closing bracket of callback to call when iterator of async is done
+				});//Closing bracket of async call
+			}
+		});
 	}
 	else if (searchType === THEME_SEARCH)  {
 		console.log("Theme search: ", searchInput.theme);
