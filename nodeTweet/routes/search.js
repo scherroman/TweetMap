@@ -90,7 +90,7 @@ handleSearchRequest = function(req, res, next) {
 		});
 	}
 	else if (searchType === THEME_SEARCH)  {
-		console.log("Theme search: ", ssearchInput);
+		console.log("Theme search: ", searchInput);
 		console.log("tweetStartingIndex: ", tweetStartingIndex);
 
 		//String manipulation for Solr query where term:searchTerm
