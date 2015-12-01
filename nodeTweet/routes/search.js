@@ -142,7 +142,7 @@ handleSearchRequest = function(req, res, next) {
 						var q = "(";
 						var bq = "defType=edismax&bq=";
 						for(i = 0; i < 10 && i < sortedRelatedTerms.length; i++) {
-							if(i != sortedRelatedTerms.length-1) {
+							if(i != sortedRelatedTerms.length-1 || i == 9) {
 								bq += sortedRelatedTerms[i].term + "^" + sortedRelatedTerms[i].count + "+AND+";
 								q += sortedRelatedTerms[i].term + "+OR+";
 							}
