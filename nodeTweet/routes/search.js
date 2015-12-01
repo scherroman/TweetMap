@@ -40,16 +40,14 @@ handleSearchRequest = function(req, res, next) {
 	console.log("Search input: ", searchInput);
 
 	if (searchType === TERM_SEARCH) {
-		console.log("Term search: ", searchInput.term);
-		console.log("tweetStartingIndex: ", searchInput.tweetStartingIndex);
-		console.log("numTweetsRequested: ", searchInput.numTweetsRequested);
-
+		console.log("Term search: ", searchInput);
+		console.log("tweetStartingIndex: ", tweetStartingIndex);
 
 		var sorlUrl = "solr/tweets/query?q=" + searchInput + "&rows=" + NUM_TWEETS_TO_RETURN + "&start=" + tweetStartingIndex;
 
 		//Solr GET request
 		solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) {
-
+			console.log("Solr GET request to obtain UUID of tweets based on term.");
 			if (!error && response.statusCode == 200) {
 				//array of objects with UUIDs
 				var tweetsToObtain = body.response.docs;
@@ -67,7 +65,7 @@ handleSearchRequest = function(req, res, next) {
 
 					});
 				}, function(err) {
-
+					console.log("Finished multiple DB calls to put all tweetsToShow into an array.");
 					var topRelatedTerms = [];
 
 					//format dates using moment
@@ -92,16 +90,15 @@ handleSearchRequest = function(req, res, next) {
 		});
 	}
 	else if (searchType === THEME_SEARCH)  {
-		console.log("Theme search: ", searchInput.theme);
-		console.log("tweetStartingIndex: ", searchInput.tweetStartingIndex);
-		console.log("numTweetsRequested: ", searchInput.numTweetsRequested);
+		console.log("Theme search: ", ssearchInput);
+		console.log("tweetStartingIndex: ", tweetStartingIndex);
 
 		//String manipulation for Solr query where term:searchTerm
 		var solrUrl = 'solr/terms/query?q=' + searchInput;
 
 		//Solr GET request
 		solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) {
-
+			console.log("Solr GET request to obtain UUID of theme.");
 			//What we do if we successfuly make the query
 			if (!error && response.statusCode == 200) {
 
@@ -128,7 +125,7 @@ handleSearchRequest = function(req, res, next) {
 						bq=(title:The)^1&bq=(title:quick)^2&bq=(title:brown)^2
 						where bq = boostQuery and is used for ranking of terms
 						*/
-
+						console.log("Accessed DB for theme to obtain relatedTerms");
 						var sortedRelatedTerms = theme.relatedTerms;
 						
 						/*
@@ -160,7 +157,7 @@ handleSearchRequest = function(req, res, next) {
 						//NOW WE MUST PERFORM SOLR QUERY FOR UUIDs OF TWEETS
 						solrRequestClient.get(relatedTermsSolrUrl, function solrRequestQuery(error, response, body) {
 							if (!error && response.statusCode == 200) {
-
+								console.log("Solr GET request to obtain UUIDs of tweets after query based on relatedTerms.");
 								//array of objects with UUIDs
 								var tweetsToObtain = body.response.docs;
 								
@@ -177,7 +174,7 @@ handleSearchRequest = function(req, res, next) {
 
 									});
 								}, function(err) {
-
+									console.log("Finished multiple DB calls to put all tweetsToShow into an array.");
 									var topRelatedTerms = [];
 									//for-loop to format topRelatedTerms into array of Strings, not JSON
 									for(i = 0; i < sortedRelatedTerms.length; i++) {// && i < 10; i++) {
