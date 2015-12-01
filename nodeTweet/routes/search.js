@@ -46,7 +46,7 @@ handleSearchRequest = function(req, res, next) {
 		var sorlUrl = "solr/tweets/query?q=" + searchInput + "&rows=" + NUM_TWEETS_TO_RETURN + "&start=" + tweetStartingIndex;
 
 		//Solr GET request
-		solrRequestClient.post(solrUrl, null, function solrRequestQuery(error, response, body) {
+		solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) {
 			console.log("Solr GET request to obtain UUID of tweets based on term.");
 			if (!error && response.statusCode == 200) {
 				//array of objects with UUIDs
@@ -141,7 +141,7 @@ handleSearchRequest = function(req, res, next) {
 						//Since each term must be added to the "queries" and to the "boost queries", 2 strings should be concatenated for final result
 						var q = "(";
 						var bq = "defType=edismax&bq=";
-						for(i = 0; i < sortedRelatedTerms.length; i++) {
+						for(i = 0; i < 10 && i < sortedRelatedTerms.length; i++) {
 							if(i != sortedRelatedTerms.length-1) {
 								bq += sortedRelatedTerms[i].term + "^" + sortedRelatedTerms[i].count + "+AND+";
 								q += sortedRelatedTerms[i].term + "+OR+";
@@ -155,9 +155,9 @@ handleSearchRequest = function(req, res, next) {
 						var relatedTermsSolrUrl = 'solr/tweets/query?q=text%3A' + q + bq + "&rows=" + NUM_TWEETS_TO_RETURN + "&start=" + tweetStartingIndex;
 						console.log("relatedTermsSolrUrl: " + relatedTermsSolrUrl);
 						//NOW WE MUST PERFORM SOLR QUERY FOR UUIDs OF TWEETS
-						solrRequestClient.post(relatedTermsSolrUrl, null, function solrRequestQuery(error, response, body) {
+						solrRequestClient.get(relatedTermsSolrUrl, function solrRequestQuery(error, response, body) {
+							console.log("Solr GET request to obtain UUIDs of tweets after query based on relatedTerms.");
 							if (!error && response.statusCode == 200) {
-								console.log("Solr GET request to obtain UUIDs of tweets after query based on relatedTerms.");
 								//array of objects with UUIDs
 								var tweetsToObtain = body.response.docs;
 								
