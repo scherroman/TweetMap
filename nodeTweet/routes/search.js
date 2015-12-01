@@ -43,8 +43,8 @@ handleSearchRequest = function(req, res, next) {
 		console.log("Term search: ", searchInput);
 		console.log("tweetStartingIndex: ", tweetStartingIndex);
 
-		var sorlUrl = "solr/tweets/query?q=" + searchInput + "&rows=" + NUM_TWEETS_TO_RETURN + "&start=" + tweetStartingIndex;
-
+		var solrUrl = "solr/tweets/query?q=" + searchInput + "&rows=" + NUM_TWEETS_TO_RETURN + "&start=" + tweetStartingIndex;
+		
 		//Solr GET request
 		solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) {
 			console.log("Solr GET request to obtain UUID of tweets based on term.");
