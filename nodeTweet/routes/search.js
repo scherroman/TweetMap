@@ -46,7 +46,7 @@ handleSearchRequest = function(req, res, next) {
 		var sorlUrl = "solr/tweets/query?q=" + searchInput + "&rows=" + NUM_TWEETS_TO_RETURN + "&start=" + tweetStartingIndex;
 
 		//Solr GET request
-		solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) {
+		solrRequestClient.post(solrUrl, function solrRequestQuery(error, response, body) {
 			console.log("Solr GET request to obtain UUID of tweets based on term.");
 			if (!error && response.statusCode == 200) {
 				//array of objects with UUIDs
@@ -155,7 +155,7 @@ handleSearchRequest = function(req, res, next) {
 						var relatedTermsSolrUrl = 'solr/tweets/query?q=text%3A' + q + bq + "&rows=" + NUM_TWEETS_TO_RETURN + "&start=" + tweetStartingIndex;
 						console.log("relatedTermsSolrUrl: " + relatedTermsSolrUrl);
 						//NOW WE MUST PERFORM SOLR QUERY FOR UUIDs OF TWEETS
-						solrRequestClient.get(relatedTermsSolrUrl, function solrRequestQuery(error, response, body) {
+						solrRequestClient.post(relatedTermsSolrUrl, function solrRequestQuery(error, response, body) {
 							if (!error && response.statusCode == 200) {
 								console.log("Solr GET request to obtain UUIDs of tweets after query based on relatedTerms.");
 								//array of objects with UUIDs
