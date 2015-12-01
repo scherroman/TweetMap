@@ -44,7 +44,7 @@ handleSearchRequest = function(req, res, next) {
 		console.log("tweetStartingIndex: ", tweetStartingIndex);
 
 		var solrUrl = "solr/tweets/query?q=" + searchInput + "&rows=" + NUM_TWEETS_TO_RETURN + "&start=" + tweetStartingIndex;
-		
+		console.log("solrUrl: " + solrUrl);
 		//Solr GET request
 		solrRequestClient.get(solrUrl, function solrRequestQuery(error, response, body) {
 			console.log("Solr GET request to obtain UUID of tweets based on term.");
@@ -57,7 +57,7 @@ handleSearchRequest = function(req, res, next) {
 
 				r.connect( {host:'localhost', port: 28015}, function(err, conn) {
 					if (err) throw err;
-					
+
 					//async IS USED TO USE A CALLBACK DURING ITERATION TO ASSIGN VALUES TO tweetsToShow
 					async.each(tweetsToObtain, function(currentSearchResult, callback) {
 						r.db('NodeTweet').table('tweets').get(currentSearchResult.id).run(conn, function(err, tweet) {
